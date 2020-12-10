@@ -13,6 +13,8 @@ Jetstream Cashier Billing Portal is a simple scaffolding billing portal to manag
 
 Currently, only Inertia with Stripe are supported. For Paddle and/or Livewire, any PR is welcomed!
 
+![example](example.png)
+
 ## 🤝 Supporting
 
 Renoki Co. on GitHub aims on bringing a lot of open source projects and helpful projects to the world. Developing and maintaining projects everyday is a harsh work and tho, we love it.
