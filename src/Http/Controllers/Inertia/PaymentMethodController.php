@@ -41,15 +41,18 @@ class PaymentMethodController extends Controller
 
         $methods = $request->user()
             ->paymentMethods()
-            ->filter(fn ($method) => $method->type === 'card')
-            ->map(fn ($method) => [
-                'default' => $method->id === optional($defaultPaymentMethod)->id,
-                'id' => $method->id,
-                'brand' => $method->card->brand,
-                'last_four' => $method->card->last4,
-                'month' => $method->card->exp_month,
-                'year' => $method->card->exp_year,
-            ]);
+            ->filter(function ($method) {
+                return $method->type === 'card';
+            })->map(function ($method) {
+                return [
+                    'default' => $method->id === optional($defaultPaymentMethod)->id,
+                    'id' => $method->id,
+                    'brand' => $method->card->brand,
+                    'last_four' => $method->card->last4,
+                    'month' => $method->card->exp_month,
+                    'year' => $method->card->exp_year,
+                ];
+            });
 
         return Inertia::render('BillingPortal/PaymentMethod/Index', [
             'methods' => $methods,

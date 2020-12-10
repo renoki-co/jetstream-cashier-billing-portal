@@ -18,13 +18,15 @@ class InvoiceTest extends TestCase
             ->post(route('billing-portal.subscription.plan-subscribe', ['plan' => static::$stripeFreePlanId]))
             ->assertRedirect(route('billing-portal.subscription.index'));
 
-        $invoices = $user->invoices()->map(fn ($invoice) => [
-            'description' => $invoice->lines->data[0]->description,
-            'created' => Carbon::parse($invoice->created)->diffForHumans(),
-            'paid' => $invoice->paid,
-            'status' => $invoice->status,
-            'url' => $invoice->hosted_invoice_url ?: null,
-        ]);
+        $invoices = $user->invoices()->map(function ($invoice) {
+            return [
+                'description' => $invoice->lines->data[0]->description,
+                'created' => Carbon::parse($invoice->created)->diffForHumans(),
+                'paid' => $invoice->paid,
+                'status' => $invoice->status,
+                'url' => $invoice->hosted_invoice_url ?: null,
+            ];
+        });
 
         $this->actingAs($user)
             ->get(route('billing-portal.invoice.index'))

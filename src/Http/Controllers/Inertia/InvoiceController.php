@@ -17,13 +17,15 @@ class InvoiceController extends Controller
      */
     public function index(Request $request)
     {
-        $invoices = $request->user()->invoices()->map(fn ($invoice) => [
-            'description' => $invoice->lines->data[0]->description,
-            'created' => Carbon::parse($invoice->created)->diffForHumans(),
-            'paid' => $invoice->paid,
-            'status' => $invoice->status,
-            'url' => $invoice->hosted_invoice_url ?: null,
-        ]);
+        $invoices = $request->user()->invoices()->map(function ($invoice) {
+            return [
+                'description' => $invoice->lines->data[0]->description,
+                'created' => Carbon::parse($invoice->created)->diffForHumans(),
+                'paid' => $invoice->paid,
+                'status' => $invoice->status,
+                'url' => $invoice->hosted_invoice_url ?: null,
+            ];
+        });
 
         return Inertia::render('BillingPortal/Invoice/Index', [
             'invoices' => $invoices->toArray(),
