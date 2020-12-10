@@ -1,17 +1,15 @@
-Package Name Here
-===================================
+Jetstream Cashier Billing Portal
+================================
 
-![CI](https://github.com/renoki-co/:package_name/workflows/CI/badge.svg?branch=master)
-[![codecov](https://codecov.io/gh/renoki-co/:package_name/branch/master/graph/badge.svg)](https://codecov.io/gh/renoki-co/:package_name/branch/master)
+![CI](https://github.com/renoki-co/jetstream-cashier-billing-portal/workflows/CI/badge.svg?branch=master)
+[![codecov](https://codecov.io/gh/renoki-co/jetstream-cashier-billing-portal/branch/master/graph/badge.svg)](https://codecov.io/gh/renoki-co/jetstream-cashier-billing-portal/branch/master)
 [![StyleCI](https://github.styleci.io/repos/:styleci_code/shield?branch=master)](https://github.styleci.io/repos/:styleci_code)
-[![Latest Stable Version](https://poser.pugx.org/renoki-co/:package_name/v/stable)](https://packagist.org/packages/renoki-co/:package_name)
-[![Total Downloads](https://poser.pugx.org/renoki-co/:package_name/downloads)](https://packagist.org/packages/renoki-co/:package_name)
-[![Monthly Downloads](https://poser.pugx.org/renoki-co/:package_name/d/monthly)](https://packagist.org/packages/renoki-co/:package_name)
-[![License](https://poser.pugx.org/renoki-co/:package_name/license)](https://packagist.org/packages/renoki-co/:package_name)
+[![Latest Stable Version](https://poser.pugx.org/renoki-co/jetstream-cashier-billing-portal/v/stable)](https://packagist.org/packages/renoki-co/jetstream-cashier-billing-portal)
+[![Total Downloads](https://poser.pugx.org/renoki-co/jetstream-cashier-billing-portal/downloads)](https://packagist.org/packages/renoki-co/jetstream-cashier-billing-portal)
+[![Monthly Downloads](https://poser.pugx.org/renoki-co/jetstream-cashier-billing-portal/d/monthly)](https://packagist.org/packages/renoki-co/jetstream-cashier-billing-portal)
+[![License](https://poser.pugx.org/renoki-co/jetstream-cashier-billing-portal/license)](https://packagist.org/packages/renoki-co/jetstream-cashier-billing-portal)
 
-**Note:** Replace  ```:package_name``` ```:package_description``` ```:package_namespace``` ```:package_service_provider``` ```:author_name``` ```:author_link``` ```:styleci_code``` with their correct values in [README.md](README.md), [CONTRIBUTING.md](CONTRIBUTING.md), [LICENSE](LICENSE) and [composer.json](composer.json) files, then delete this line.
-
-This is where your description should go. Try and limit it to a paragraph or two. Consider adding a small example.
+Jetstream Cashier Billing Portal is a simple scaffolding billing portal to manage subscriptions, built on top of Jetstream & Cashier Register.
 
 ## 🤝 Supporting
 
@@ -26,19 +24,13 @@ If you are using your application in your day-to-day job, on presentation demos,
 You can install the package via composer:
 
 ```bash
-composer require renoki-co/:package_name
+composer require renoki-co/jetstream-cashier-billing-portal
 ```
 
 Publish the config:
 
 ```bash
-$ php artisan vendor:publish --provider="RenokiCo\:package_namespace\:package_service_provider" --tag="config"
-```
-
-Publish the migrations:
-
-```bash
-$ php artisan vendor:publish --provider="RenokiCo\:package_namespace\:package_service_provider" --tag="migrations"
+$ php artisan vendor:publish --provider="RenokiCo\BillingPortal\BillingPortalServiceProvider" --tag="config"
 ```
 
 ## 🙌 Usage

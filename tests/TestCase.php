@@ -1,6 +1,6 @@
 <?php
 
-namespace RenokiCo\:package_namespace\Test;
+namespace RenokiCo\BillingPortal\Test;
 
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -17,7 +17,6 @@ abstract class TestCase extends Orchestra
 
         $this->loadLaravelMigrations(['--database' => 'sqlite']);
 
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
         $this->withFactories(__DIR__.'/database/factories');
     }

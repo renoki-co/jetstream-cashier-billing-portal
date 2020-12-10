@@ -1,9 +1,9 @@
 {
-    "name": "renoki-co/:package_name",
-    "description": ":package_description",
+    "name": "renoki-co/jetstream-cashier-billing-portal",
+    "description": "Jetstream Cashier Billing Portal is a simple scaffolding billing portal to manage subscriptions, built on top of Jetstream & Cashier Register.",
     "keywords": ["laravel", "php"],
     "license": "Apache-2.0",
-    "homepage": "https://github.com/renoki-co/:package_name",
+    "homepage": "https://github.com/renoki-co/jetstream-cashier-billing-portal",
     "authors": [
         {
             "name": "Alex Renoki",
@@ -16,12 +16,12 @@
     },
     "autoload": {
         "psr-4": {
-            "RenokiCo\\:package_namespace\\": "src/"
+            "RenokiCo\\BillingPortal\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "RenokiCo\\:package_namespace\\Test\\": "tests"
+            "RenokiCo\\BillingPortal\\Test\\": "tests"
         }
     },
     "scripts": {
@@ -40,7 +40,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "RenokiCo\\:package_namespace\\:package_service_provider"
+                "RenokiCo\\BillingPortal\\BillingPortalServiceProvider"
             ]
         }
     }
