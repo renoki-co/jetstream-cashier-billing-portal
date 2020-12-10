@@ -2,6 +2,7 @@
 
 namespace RenokiCo\BillingPortal\Http\Controllers\Inertia;
 
+use Closure;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -19,7 +20,11 @@ class PaymentMethodController extends Controller
      */
     public function __construct(Request $request)
     {
-        $request->user()->createOrGetStripeCustomer();
+        $this->middleware(function (Request $request, Closure $next) {
+            $request->user()->createOrGetStripeCustomer();
+
+            return $next($request);
+        });
     }
 
     /**
