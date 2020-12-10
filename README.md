@@ -11,6 +11,8 @@ Jetstream Cashier Billing Portal
 
 Jetstream Cashier Billing Portal is a simple scaffolding billing portal to manage subscriptions, built on top of Jetstream & Cashier Register.
 
+Currently, only Inertia with Stripe are supported. For Paddle and/or Livewire, any PR is welcomed!
+
 ## 🤝 Supporting
 
 Renoki Co. on GitHub aims on bringing a lot of open source projects and helpful projects to the world. Developing and maintaining projects everyday is a harsh work and tho, we love it.
@@ -21,17 +23,67 @@ If you are using your application in your day-to-day job, on presentation demos,
 
 ## 🚀 Installation
 
+This package assumes you have installed Jetstream in your project. If not, head over to [Jetstream website](https://jetstream.laravel.com) for installation steps.
+
 You can install the package via composer:
 
 ```bash
 composer require renoki-co/jetstream-cashier-billing-portal
 ```
 
-Publish the config:
+You shall install the Cashier Billing Portal in one command, just like Jetstream. This will install Cashier, Cashier Register and Billing Portal.
 
 ```bash
-$ php artisan vendor:publish --provider="RenokiCo\BillingPortal\BillingPortalServiceProvider" --tag="config"
+$ php artisan billing-portal:install
 ```
+
+Next up, you should use the [custom Cashier Register trait](https://github.com/renoki-co/cashier-register#preparing-the-model) instead of Cashier's one for your billable model.
+
+```php
+use RenokiCo\CashierRegister\BillableWithStripe;
+
+class User extends Model
+{
+    use BillableWithStripe;
+
+    //
+}
+```
+
+You will also have to [prepare the plans](https://github.com/renoki-co/cashier-register#preparing-the-plans) in `CashierRegisterServiceProvider`.
+
+Import the created `app/Providers/CashierRegisterServiceProvider` class into your `app.php`:
+
+```php
+$providers = [
+    // ...
+    \App\Providers\CashierRegisterServiceProvider::class,
+];
+```
+
+In `CashierRegisterServiceProvider`'s boot method you may define the plans you need:
+
+```php
+use RenokiCo\CashierRegister\CashierRegisterServiceProvider as BaseServiceProvider;
+use RenokiCo\CashierRegister\Saas;
+
+class CashierRegisterServiceProvider extends BaseServiceProvider
+{
+    /**
+     * Boot the service provider.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
+
+        // Define plans here.
+    }
+}
+```
+
+For more information about plans and quotas, check [Cashier Register Documentation](https://github.com/renoki-co/cashier-register)
 
 ## 🙌 Usage
 

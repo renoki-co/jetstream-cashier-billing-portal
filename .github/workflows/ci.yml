@@ -38,7 +38,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    
+
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
@@ -56,10 +56,13 @@ jobs:
       run: |
         composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "orchestra/database:${{ matrix.testbench }}" --no-interaction --no-update
         composer update --${{ matrix.prefer }} --prefer-dist --no-interaction --no-suggest
+        composer require laravel/cashier:"^12.6"
 
     - name: Run tests
       run: |
         vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
+      env:
+        STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
 
     - uses: codecov/codecov-action@v1
       with:

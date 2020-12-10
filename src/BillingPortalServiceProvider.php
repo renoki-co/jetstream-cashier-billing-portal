@@ -13,7 +13,21 @@ class BillingPortalServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->publishes([
+            __DIR__.'/../config/billing-portal.php' => config_path('billing-portal.php'),
+        ], 'config');
+
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/billing-portal.php', 'billing-portal'
+        );
+
+        $this->loadRoutesFrom(__DIR__.'/../routes/'.config('jetstream.stack').'.php');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Console\Commands\InstallCommand::class,
+            ]);
+        }
     }
 
     /**
