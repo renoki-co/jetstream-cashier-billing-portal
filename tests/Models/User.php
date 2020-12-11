@@ -18,9 +18,4 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-    protected static function newFactory()
-    {
-        return new \RenokiCo\BillingPortal\Test\Factories\UserFactory;
-    }
 }
