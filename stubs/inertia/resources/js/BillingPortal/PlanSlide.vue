@@ -100,8 +100,8 @@
 </template>
 
 <script>
-import JetButton from '../Jetstream/Button';
-import JetSecondaryButton from '../Jetstream/SecondaryButton';
+import JetButton from '@/Jetstream/Button';
+import JetSecondaryButton from '@/Jetstream/SecondaryButton';
 
 export default {
     components: {
