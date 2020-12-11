@@ -14,9 +14,9 @@ class TestServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-       $this->loadViewsFrom(__DIR__.'/resources/views', 'test');
+        $this->loadViewsFrom(__DIR__.'/resources/views', 'test');
 
-       Inertia::setRootView('test::app');
+        Inertia::setRootView('test::app');
     }
 
     /**

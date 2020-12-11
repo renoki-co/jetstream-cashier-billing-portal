@@ -3,7 +3,7 @@
 namespace RenokiCo\BillingPortal\Console\Commands;
 
 use Illuminate\Filesystem\Filesystem;
-use Laravel\Jetstream\Console\InstallCommand As JetstreamInstallCommand;
+use Laravel\Jetstream\Console\InstallCommand as JetstreamInstallCommand;
 
 class InstallCommand extends JetstreamInstallCommand
 {
@@ -54,7 +54,7 @@ class InstallCommand extends JetstreamInstallCommand
      */
     protected function installInertiaStack()
     {
-        $this->callSilent('vendor:publish', ['--provider' => 'RenokiCo\BillingPortal\BillingPortalServiceProvider','--tag' => 'config', '--force' => true]);
+        $this->callSilent('vendor:publish', ['--provider' => 'RenokiCo\BillingPortal\BillingPortalServiceProvider', '--tag' => 'config', '--force' => true]);
 
         (new Filesystem)->ensureDirectoryExists(resource_path('js/Pages/BillingPortal'));
 
