@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories\RenokiCo\BillingPortal\Test\Models;
+namespace Database\Factories\RenokiCo\BillingPortal\Test\Factories;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
