@@ -45,7 +45,7 @@
 <script>
 import AppLayout from '@/Layouts/AppLayout';
 import JetSecondaryButton from '@/Jetstream/SecondaryButton';
-import PlanSlide from '@/Components/PlanSlide';
+import PlanSlide from '@/BillingPortal/PlanSlide';
 
 export default {
     components: {

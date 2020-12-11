@@ -57,7 +57,9 @@ class InstallCommand extends JetstreamInstallCommand
         $this->callSilent('vendor:publish', ['--provider' => 'RenokiCo\BillingPortal\BillingPortalServiceProvider', '--tag' => 'config', '--force' => true]);
 
         (new Filesystem)->ensureDirectoryExists(resource_path('js/Pages/BillingPortal'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/BillingPortal'));
 
         (new Filesystem)->copyDirectory(__DIR__.'/../../../stubs/inertia/resources/js/Pages/BillingPortal', resource_path('js/Pages/BillingPortal'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../../stubs/inertia/resources/js/BillingPortal', resource_path('js/BillingPortal'));
     }
 }
