@@ -3,7 +3,6 @@
 namespace RenokiCo\BillingPortal\Test;
 
 use RenokiCo\BillingPortal\Test\Models\User;
-use RenokiCo\CashierRegister\Saas;
 
 class PaymentMethodTest extends TestCase
 {

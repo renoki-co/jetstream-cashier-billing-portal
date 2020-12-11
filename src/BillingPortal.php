@@ -39,5 +39,4 @@ class BillingPortal
             static::$syncQuotasCallback($user, $subscription);
         }
     }
-
 }

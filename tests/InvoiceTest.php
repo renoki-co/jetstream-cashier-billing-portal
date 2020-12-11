@@ -4,7 +4,6 @@ namespace RenokiCo\BillingPortal\Test;
 
 use Carbon\Carbon;
 use RenokiCo\BillingPortal\Test\Models\User;
-use RenokiCo\CashierRegister\Saas;
 
 class InvoiceTest extends TestCase
 {

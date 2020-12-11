@@ -11,7 +11,6 @@ use Stripe\Plan;
 use Stripe\Product;
 use Stripe\Stripe;
 
-
 abstract class TestCase extends Orchestra
 {
     protected static $productId;
