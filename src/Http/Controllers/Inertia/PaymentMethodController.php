@@ -3,7 +3,6 @@
 namespace RenokiCo\BillingPortal\Http\Controllers\Inertia;
 
 use Closure;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
