@@ -24,12 +24,6 @@ class SubscriptionController extends Controller
         $request->merge([
             'subscription' => $request->subscription ?: 'main',
         ]);
-
-        $this->middleware(function (Request $request, Closure $next) {
-            $this->syncQuotas($request->user(), $request->subscription);
-
-            return $next($request);
-        }, ['except' => 'index']);
     }
 
     /**
@@ -79,7 +73,7 @@ class SubscriptionController extends Controller
 
         $subscription = $user->newSubscription($request->subscription, $planId)->create($payment);
 
-        $this->syncQuotas($request->user(), $request->subscription);
+        $this->syncQuotas($request->user(), $subscription);
 
         return Redirect::route('billing-portal.subscription.index')
             ->with('success', "You have successfully subscribed to {$plan->getName()}!");
@@ -112,7 +106,7 @@ class SubscriptionController extends Controller
                 : $user->newSubscription($request->subscription, $newPlanId)->create(optional($user->defaultPaymentMethod())->id);
         }
 
-        $this->syncQuotas($request->user(), $request->subscription);
+        $this->syncQuotas($request->user(), $subscription);
 
         return Redirect::route('billing-portal.subscription.index')
             ->with('success', "The plan got successfully changed to {$plan->getName()}!");
@@ -134,7 +128,7 @@ class SubscriptionController extends Controller
             $subscription->resume();
         }
 
-        $this->syncQuotas($request->user(), $request->subscription);
+        $this->syncQuotas($request->user(), $subscription);
 
         return Redirect::route('billing-portal.subscription.index')
             ->with('success', 'The subscription has been resumed.');
@@ -156,7 +150,7 @@ class SubscriptionController extends Controller
             $subscription->cancel();
         }
 
-        $this->syncQuotas($request->user(), $request->subscription);
+        $this->syncQuotas($request->user(), $subscription);
 
         return Redirect::route('billing-portal.subscription.index')
             ->with('success', 'The current subscription got cancelled!');

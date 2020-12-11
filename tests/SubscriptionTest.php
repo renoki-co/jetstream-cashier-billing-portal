@@ -2,6 +2,7 @@
 
 namespace RenokiCo\BillingPortal\Test;
 
+use RenokiCo\BillingPortal\BillingPortal;
 use RenokiCo\BillingPortal\Test\Models\User;
 use RenokiCo\CashierRegister\Saas;
 
@@ -102,5 +103,26 @@ class SubscriptionTest extends TestCase
             ->assertRedirect(route('billing-portal.subscription.index'));
 
         $this->assertFalse($user->subscription('main')->cancelled());
+    }
+
+    public function test_syncing_quotas()
+    {
+        $user = factory(User::class)->create();
+
+        $user->subscriptions()->delete();
+
+        $synced = false;
+
+        BillingPortal::onSyncingQuotas(function ($user, $subscription) use (&$synced) {
+            $this->assertTrue($subscription->user->is($user));
+
+            $synced = true;
+        });
+
+        $this->actingAs($user)
+            ->post(route('billing-portal.subscription.plan-subscribe', ['plan' => static::$stripeFreePlanId]))
+            ->assertRedirect(route('billing-portal.subscription.index'));
+
+        $this->assertTrue($synced);
     }
 }

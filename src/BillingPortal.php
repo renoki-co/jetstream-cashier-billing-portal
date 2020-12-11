@@ -30,13 +30,15 @@ class BillingPortal
      * Run the syncing quotas callback.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $user
-     * @param  string  $subscription
+     * @param  \Illuminate\Database\Eloquent\Model  $subscription
      * @return void
      */
-    public static function syncQuotas(Model $user, string $subscription)
+    public static function syncQuotas(Model $user, Model $subscription)
     {
         if (static::$syncQuotasCallback) {
-            static::$syncQuotasCallback($user, $subscription);
+            $callback = static::$syncQuotasCallback;
+
+            $callback($user, $subscription);
         }
     }
 }
