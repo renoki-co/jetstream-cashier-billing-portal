@@ -9,7 +9,7 @@ class SubscriptionTest extends TestCase
 {
     public function test_index_subscriptions()
     {
-        $user = User::factory()->create();
+        $user = factory(User::class)->create();
 
         $subscription = $user->subscription('main');
 
@@ -29,7 +29,7 @@ class SubscriptionTest extends TestCase
 
     public function test_subscribe_to_free_plan()
     {
-        $user = User::factory()->create();
+        $user = factory(User::class)->create();
 
         $user->subscriptions()->delete();
 
@@ -42,7 +42,7 @@ class SubscriptionTest extends TestCase
 
     public function test_subscribe_to_paid_plan_without_payment_method()
     {
-        $user = User::factory()->create();
+        $user = factory(User::class)->create();
 
         $user->subscriptions()->delete();
 
@@ -55,7 +55,7 @@ class SubscriptionTest extends TestCase
 
     public function test_swap_to_free_plan()
     {
-        $user = User::factory()->create();
+        $user = factory(User::class)->create();
 
         $user->subscriptions()->delete();
 
@@ -68,7 +68,7 @@ class SubscriptionTest extends TestCase
 
     public function test_swap_to_paid_plan_without_payment_method()
     {
-        $user = User::factory()->create();
+        $user = factory(User::class)->create();
 
         $user->subscriptions()->delete();
 
@@ -83,7 +83,7 @@ class SubscriptionTest extends TestCase
 
     public function test_cancel_and_resume_plan()
     {
-        $user = User::factory()->create();
+        $user = factory(User::class)->create();
 
         $user->subscriptions()->delete();
 

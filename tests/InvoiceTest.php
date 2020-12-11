@@ -10,7 +10,7 @@ class InvoiceTest extends TestCase
 {
     public function test_invoices_index()
     {
-        $user = User::factory()->create();
+        $user = factory(User::class)->create();
 
         $user->subscriptions()->delete();
 

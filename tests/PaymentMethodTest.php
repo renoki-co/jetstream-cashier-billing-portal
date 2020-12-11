@@ -9,7 +9,7 @@ class PaymentMethodTest extends TestCase
 {
     public function test_payment_methods_index()
     {
-        $user = User::factory()->create();
+        $user = factory(User::class)->create();
 
         $this->actingAs($user)
             ->get(route('billing-portal.payment-method.index'))
@@ -45,7 +45,7 @@ class PaymentMethodTest extends TestCase
 
     public function test_payment_methods_create()
     {
-        $user = User::factory()->create();
+        $user = factory(User::class)->create();
 
 
         $this->actingAs($user)
@@ -55,7 +55,7 @@ class PaymentMethodTest extends TestCase
 
     public function test_payment_methods_store_without_default_method_set()
     {
-        $user = User::factory()->create();
+        $user = factory(User::class)->create();
 
         $this->actingAs($user)
             ->post(route('billing-portal.payment-method.store', ['token' => 'pm_card_visa']))
@@ -66,7 +66,7 @@ class PaymentMethodTest extends TestCase
 
     public function test_payment_methods_store()
     {
-        $user = User::factory()->create();
+        $user = factory(User::class)->create();
 
         $user->createOrGetStripeCustomer();
 
@@ -81,7 +81,7 @@ class PaymentMethodTest extends TestCase
 
     public function test_payment_methods_destroy()
     {
-        $user = User::factory()->create();
+        $user = factory(User::class)->create();
 
         $user->createOrGetStripeCustomer();
 
@@ -100,7 +100,7 @@ class PaymentMethodTest extends TestCase
 
     public function test_payment_methods_set_default()
     {
-        $user = User::factory()->create();
+        $user = factory(User::class)->create();
 
         $user->createOrGetStripeCustomer();
 

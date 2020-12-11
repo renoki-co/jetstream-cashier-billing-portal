@@ -24,8 +24,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "RenokiCo\\BillingPortal\\Test\\": "tests",
-            "Database\\Factories\\RenokiCo\\BillingPortal\\Test\\Factories\\": "tests/Factories"
+            "RenokiCo\\BillingPortal\\Test\\": "tests"
         }
     },
     "scripts": {
