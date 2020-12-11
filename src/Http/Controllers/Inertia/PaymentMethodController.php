@@ -43,7 +43,7 @@ class PaymentMethodController extends Controller
             ->paymentMethods()
             ->filter(function ($method) {
                 return $method->type === 'card';
-            })->map(function ($method) {
+            })->map(function ($method) use ($defaultPaymentMethod) {
                 return [
                     'default' => $method->id === optional($defaultPaymentMethod)->id,
                     'id' => $method->id,

@@ -47,7 +47,6 @@ class PaymentMethodTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-
         $this->actingAs($user)
             ->get(route('billing-portal.payment-method.create'))
             ->assertInertia('BillingPortal/PaymentMethod/Create');
