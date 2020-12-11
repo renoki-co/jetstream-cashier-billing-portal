@@ -87,6 +87,8 @@ class CashierRegisterServiceProvider extends BaseServiceProvider
 }
 ```
 
+By default, the subscriptions are accessible under `/user/billing/subscription`.
+
 For more information about defining plans and quotas, check [Cashier Register documentation](https://github.com/renoki-co/cashier-register) and check [Laravel Cashier for Stripe documentation](https://laravel.com/docs/8.x/billing) on handling the billing.
 
 ## 🐛 Testing
