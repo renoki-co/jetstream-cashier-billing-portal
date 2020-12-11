@@ -2,7 +2,6 @@
 
 namespace RenokiCo\BillingPortal\Http\Controllers\Inertia;
 
-use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
