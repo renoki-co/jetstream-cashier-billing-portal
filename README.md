@@ -9,7 +9,7 @@ Jetstream Cashier Billing Portal
 [![Monthly Downloads](https://poser.pugx.org/renoki-co/jetstream-cashier-billing-portal/d/monthly)](https://packagist.org/packages/renoki-co/jetstream-cashier-billing-portal)
 [![License](https://poser.pugx.org/renoki-co/jetstream-cashier-billing-portal/license)](https://packagist.org/packages/renoki-co/jetstream-cashier-billing-portal)
 
-Jetstream Cashier Billing Portal is a simple scaffolding billing portal to manage subscriptions, built on top of Jetstream & Cashier Register.
+Jetstream Cashier Billing Portal is a simple scaffolding billing portal to manage subscriptions, invoices and payment methods, built on top of Jetstream & Cashier Register.
 
 Currently, only Inertia with Stripe are supported. For Paddle and/or Livewire, any PR is welcomed!
 
@@ -63,6 +63,8 @@ $providers = [
 ];
 ```
 
+## 🙌 Usage
+
 In `CashierRegisterServiceProvider`'s boot method you may define the plans you need:
 
 ```php
@@ -85,11 +87,7 @@ class CashierRegisterServiceProvider extends BaseServiceProvider
 }
 ```
 
-## 🙌 Usage
-
-The package is all about the scaffolding a billing portal for your app.
-
-For more information about plans and quotas, check [Cashier Register Documentation](https://github.com/renoki-co/cashier-register) and [Laravel Cashier for Stripe](https://laravel.com/docs/8.x/billing).
+For more information about defining plans and quotas, check [Cashier Register documentation](https://github.com/renoki-co/cashier-register) and check [Laravel Cashier for Stripe documentation](https://laravel.com/docs/8.x/billing) on handling the billing.
 
 ## 🐛 Testing
 
