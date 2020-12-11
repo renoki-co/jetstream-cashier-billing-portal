@@ -85,13 +85,11 @@ class CashierRegisterServiceProvider extends BaseServiceProvider
 }
 ```
 
-For more information about plans and quotas, check [Cashier Register Documentation](https://github.com/renoki-co/cashier-register)
-
 ## 🙌 Usage
 
-```php
-$ //
-```
+The package is all about the scaffolding a billing portal for your app.
+
+For more information about plans and quotas, check [Cashier Register Documentation](https://github.com/renoki-co/cashier-register) and [Laravel Cashier for Stripe](https://laravel.com/docs/8.x/billing).
 
 ## 🐛 Testing
 
