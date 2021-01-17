@@ -71,8 +71,10 @@ class BillingPortal
      */
     public static function getBillableFromRequest(Request $request)
     {
-        return static::$billableOnRequest
-            ? static::$billableOnRequest($request)
+        $closure = static::$billableOnRequest;
+
+        return $closure
+            ? $closure($request)
             : $request->user();
     }
 }
