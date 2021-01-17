@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
+use RenokiCo\BillingPortal\BillingPortal;
 
 class InvoiceController extends Controller
 {
@@ -17,7 +18,7 @@ class InvoiceController extends Controller
      */
     public function index(Request $request)
     {
-        $invoices = $request->user()->invoices()->map(function ($invoice) {
+        $invoices = BillingPortal::getBillableFromRequest($request)->invoices()->map(function ($invoice) {
             return [
                 'description' => $invoice->lines->data[0]->description,
                 'created' => Carbon::parse($invoice->created)->diffForHumans(),

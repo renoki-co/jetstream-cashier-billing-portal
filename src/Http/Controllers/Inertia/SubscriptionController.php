@@ -33,7 +33,7 @@ class SubscriptionController extends Controller
      */
     public function index(Request $request)
     {
-        $user = $request->user();
+        $user = BillingPortal::getBillableFromRequest($request);
 
         $subscription = $this->getCurrentSubscription($user, $request->subscription);
 
@@ -58,7 +58,7 @@ class SubscriptionController extends Controller
      */
     public function subscribeToPlan(Request $request, string $planId)
     {
-        $user = $request->user();
+        $user = BillingPortal::getBillableFromRequest($request);
 
         $plan = Saas::getPlan($planId);
 
@@ -72,7 +72,7 @@ class SubscriptionController extends Controller
 
         $subscription = $user->newSubscription($request->subscription, $planId)->create($payment);
 
-        $this->syncQuotas($request->user(), $subscription);
+        $this->syncQuotas(BillingPortal::getBillableFromRequest($request), $subscription);
 
         return Redirect::route('billing-portal.subscription.index')
             ->with('success', "You have successfully subscribed to {$plan->getName()}!");
@@ -89,7 +89,7 @@ class SubscriptionController extends Controller
     {
         $plan = Saas::getPlan($newPlanId);
 
-        $user = $request->user();
+        $user = BillingPortal::getBillableFromRequest($request);
 
         $subscription = $this->getCurrentSubscription($user, $request->subscription);
 
@@ -105,7 +105,7 @@ class SubscriptionController extends Controller
                 : $user->newSubscription($request->subscription, $newPlanId)->create(optional($user->defaultPaymentMethod())->id);
         }
 
-        $this->syncQuotas($request->user(), $subscription);
+        $this->syncQuotas(BillingPortal::getBillableFromRequest($request), $subscription);
 
         return Redirect::route('billing-portal.subscription.index')
             ->with('success', "The plan got successfully changed to {$plan->getName()}!");
@@ -119,7 +119,7 @@ class SubscriptionController extends Controller
      */
     public function resumeSubscription(Request $request)
     {
-        $user = $request->user();
+        $user = BillingPortal::getBillableFromRequest($request);
 
         $subscription = $this->getCurrentSubscription($user, $request->subscription);
 
@@ -127,7 +127,7 @@ class SubscriptionController extends Controller
             $subscription->resume();
         }
 
-        $this->syncQuotas($request->user(), $subscription);
+        $this->syncQuotas(BillingPortal::getBillableFromRequest($request), $subscription);
 
         return Redirect::route('billing-portal.subscription.index')
             ->with('success', 'The subscription has been resumed.');
@@ -141,7 +141,7 @@ class SubscriptionController extends Controller
      */
     public function cancelSubscription(Request $request)
     {
-        $user = $request->user();
+        $user = BillingPortal::getBillableFromRequest($request);
 
         $subscription = $this->getCurrentSubscription($user, $request->subscription);
 
@@ -149,7 +149,7 @@ class SubscriptionController extends Controller
             $subscription->cancel();
         }
 
-        $this->syncQuotas($request->user(), $subscription);
+        $this->syncQuotas(BillingPortal::getBillableFromRequest($request), $subscription);
 
         return Redirect::route('billing-portal.subscription.index')
             ->with('success', 'The current subscription got cancelled!');
