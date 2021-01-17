@@ -2,8 +2,10 @@
 
 namespace RenokiCo\BillingPortal\Test;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Orchestra\Testbench\TestCase as Orchestra;
+use RenokiCo\BillingPortal\BillingPortal;
 use RenokiCo\CashierRegister\Saas;
 use Stripe\ApiResource;
 use Stripe\Exception\InvalidRequestException;
@@ -48,6 +50,10 @@ abstract class TestCase extends Orchestra
                 Saas::feature('Build Minutes', 'build.minutes', 10),
                 Saas::feature('Seats', 'teams', 5)->notResettable(),
             ]);
+
+        BillingPortal::setBillableOnRequest(function (Request $request) {
+           return $request->user();
+        });
     }
 
     /**

@@ -91,6 +91,32 @@ By default, the subscriptions are accessible under `/user/billing/subscription`,
 
 For more information about defining plans and quotas, check [Cashier Register documentation](https://github.com/renoki-co/cashier-register) and check [Laravel Cashier for Stripe documentation](https://laravel.com/docs/8.x/billing) on handling the billing.
 
+## Custom Billables
+
+By default, the billing is made directly on the currently authenticated model. In some cases like using billable trait on the Team model, you may change the model that will be retrieved from the current request. You may define it in the `boot()` method of `CashierRegisterServiceProvider`:
+
+```php
+use Illuminate\Http\Request;
+use RenokiCo\BillingPortal\BillingPortal;
+
+class CashierRegisterServiceProvider extends BaseServiceProvider
+{
+    /**
+     * Boot the service provider.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
+
+        BillingPortal::setBillableOnRequest(function (Request $request) {
+            return $request->user()->currentTeam;
+        });
+    }
+}
+```
+
 ## 🐛 Testing
 
 ``` bash

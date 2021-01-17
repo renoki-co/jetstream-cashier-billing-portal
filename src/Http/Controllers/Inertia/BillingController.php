@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Redirect;
+use RenokiCo\BillingPortal\BillingPortal;
 
 class BillingController extends Controller
 {
@@ -18,7 +19,7 @@ class BillingController extends Controller
     public function portal(Request $request)
     {
         return $this->getBillingPortalRedirect(
-            $request->user(), false
+            BillingPorta::getBillableFromRequest($request), false
         );
     }
 
