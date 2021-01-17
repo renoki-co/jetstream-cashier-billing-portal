@@ -52,7 +52,7 @@ abstract class TestCase extends Orchestra
             ]);
 
         BillingPortal::setBillableOnRequest(function (Request $request) {
-           return $request->user();
+            return $request->user();
         });
     }
 
