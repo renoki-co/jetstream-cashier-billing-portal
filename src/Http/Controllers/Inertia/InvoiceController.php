@@ -18,7 +18,7 @@ class InvoiceController extends Controller
      */
     public function index(Request $request)
     {
-        $invoices = BillingPorta::getBillableFromRequest($request)->invoices()->map(function ($invoice) {
+        $invoices = BillingPortal::getBillableFromRequest($request)->invoices()->map(function ($invoice) {
             return [
                 'description' => $invoice->lines->data[0]->description,
                 'created' => Carbon::parse($invoice->created)->diffForHumans(),

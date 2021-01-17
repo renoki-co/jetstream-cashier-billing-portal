@@ -21,7 +21,7 @@ class PaymentMethodController extends Controller
     public function __construct(Request $request)
     {
         $this->middleware(function (Request $request, Closure $next) {
-            BillingPorta::getBillableFromRequest($request)->createOrGetStripeCustomer();
+            BillingPortal::getBillableFromRequest($request)->createOrGetStripeCustomer();
 
             return $next($request);
         });
@@ -35,11 +35,11 @@ class PaymentMethodController extends Controller
      */
     public function index(Request $request)
     {
-        BillingPorta::getBillableFromRequest($request)->updateDefaultPaymentMethodFromStripe();
+        BillingPortal::getBillableFromRequest($request)->updateDefaultPaymentMethodFromStripe();
 
-        $defaultPaymentMethod = BillingPorta::getBillableFromRequest($request)->defaultPaymentMethod();
+        $defaultPaymentMethod = BillingPortal::getBillableFromRequest($request)->defaultPaymentMethod();
 
-        $methods = BillingPorta::getBillableFromRequest($request)
+        $methods = BillingPortal::getBillableFromRequest($request)
             ->paymentMethods()
             ->filter(function ($method) {
                 return $method->type === 'card';
@@ -68,7 +68,7 @@ class PaymentMethodController extends Controller
     public function create(Request $request)
     {
         return Inertia::render('BillingPortal/PaymentMethod/Create', [
-            'intent' => BillingPorta::getBillableFromRequest($request)->createSetupIntent(),
+            'intent' => BillingPortal::getBillableFromRequest($request)->createSetupIntent(),
             'stripe_key' => config('cashier.key'),
         ]);
     }
@@ -85,10 +85,10 @@ class PaymentMethodController extends Controller
             'token' => ['required', 'string'],
         ]);
 
-        BillingPorta::getBillableFromRequest($request)->addPaymentMethod($request->token);
+        BillingPortal::getBillableFromRequest($request)->addPaymentMethod($request->token);
 
-        if (! BillingPorta::getBillableFromRequest($request)->hasDefaultPaymentMethod()) {
-            BillingPorta::getBillableFromRequest($request)->updateDefaultPaymentMethod($request->token);
+        if (! BillingPortal::getBillableFromRequest($request)->hasDefaultPaymentMethod()) {
+            BillingPortal::getBillableFromRequest($request)->updateDefaultPaymentMethod($request->token);
         }
 
         return Redirect::route('billing-portal.payment-method.index')
@@ -105,7 +105,7 @@ class PaymentMethodController extends Controller
     public function destroy(Request $request, string $paymentMethod)
     {
         try {
-            $paymentMethod = BillingPorta::getBillableFromRequest($request)->findPaymentMethod($paymentMethod);
+            $paymentMethod = BillingPortal::getBillableFromRequest($request)->findPaymentMethod($paymentMethod);
         } catch (Exception $e) {
             return Redirect::route('billing-portal.payment-method.index')
                 ->with('success', 'The payment method got removed!');
@@ -129,7 +129,7 @@ class PaymentMethodController extends Controller
     public function setDefault(Request $request, string $paymentMethod)
     {
         try {
-            BillingPorta::getBillableFromRequest($request)->updateDefaultPaymentMethod($paymentMethod);
+            BillingPortal::getBillableFromRequest($request)->updateDefaultPaymentMethod($paymentMethod);
         } catch (Exception $e) {
             return Redirect::route('billing-portal.payment-method.index')
                 ->with('success', 'The default payment method got updated!');
