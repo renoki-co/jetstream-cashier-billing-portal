@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": "^7.3|^8.0",
-        "laravel/framework": "^8.2",
+        "laravel/framework": "^8.23",
         "laravel/jetstream": "^1.6|^2.0",
         "renoki-co/cashier-register": "^3.4.0"
     },
