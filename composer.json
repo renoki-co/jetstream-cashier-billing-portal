@@ -1,7 +1,7 @@
 {
     "name": "renoki-co/jetstream-cashier-billing-portal",
     "description": "Jetstream Cashier Billing Portal is a simple scaffolding billing portal to manage subscriptions, built on top of Jetstream & Cashier Register.",
-    "keywords": ["laravel", "php"],
+    "keywords": ["laravel", "php", "cashier", "billing", "portal", "jetstream", "stripe", "saas", "plans", "subscription"],
     "license": "Apache-2.0",
     "homepage": "https://github.com/renoki-co/jetstream-cashier-billing-portal",
     "authors": [

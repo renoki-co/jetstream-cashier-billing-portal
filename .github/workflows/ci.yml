@@ -53,7 +53,7 @@ jobs:
       run: |
         composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "orchestra/database:${{ matrix.testbench }}" --no-interaction --no-update
         composer update --${{ matrix.prefer }} --prefer-dist --no-interaction --no-suggest
-        composer require laravel/cashier:"^12.6"
+        composer require laravel/cashier:"^12.9"
 
     - name: Run tests
       run: |
