@@ -110,17 +110,18 @@ class BillingPortal
      * Calculate the options for Stripe Checkout for
      * a specific Billable mode, plan and subscription name.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $billable
      * @param  \RenokiCo\CashierRegister\Plan  $plan
      * @param  string  $subscription
      * @return array
      */
-    public static function getOptionsForStripeCheckout($billable, Plan $plan, string $subscription): array
+    public static function getOptionsForStripeCheckout(Request $request, $billable, Plan $plan, string $subscription): array
     {
         $closure = static::$stripeCheckoutOptions;
 
         return $closure
-            ? $closure($billable, $plan, $subscription)
+            ? $closure($request, $billable, $plan, $subscription)
             : [];
     }
 
@@ -139,12 +140,12 @@ class BillingPortal
      * Mutate the Stripe checkout for
      * a specific Billable mode, plan and subscription name.
      *
-     * @param  \Laravel\Cashier\Checkout  $checkout
+     * @param  \Laravel\Cashier\SubscriptionBuilder  $checkout
      * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $billable
      * @param  \RenokiCo\CashierRegister\Plan  $plan
      * @param  string  $subscription
-     * @return \Laravel\Cashier\Checkout
+     * @return \Laravel\Cashier\SubscriptionBuilder
      */
     public static function mutateCheckout($checkout, Request $request, $billable, Plan $plan, string $subscription)
     {
