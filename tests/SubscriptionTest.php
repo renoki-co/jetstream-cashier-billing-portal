@@ -85,7 +85,7 @@ class SubscriptionTest extends TestCase
 
         $this->actingAs($user)
             ->post(route('billing-portal.subscription.plan-swap', ['plan' => static::$stripePlanId]))
-            ->assertRedirect(route('billing-portal.payment-method.index'));
+            ->assertOk();
     }
 
     public function test_cancel_and_resume_plan()
