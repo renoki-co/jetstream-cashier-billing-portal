@@ -27,6 +27,8 @@ If you are using your application in your day-to-day job, on presentation demos,
 
 This package assumes you have installed Jetstream in your project. If not, head over to [Jetstream website](https://jetstream.laravel.com) for installation steps.
 
+### Scaffolding
+
 You can install the package via composer:
 
 ```bash
@@ -38,6 +40,21 @@ You shall install the Cashier Billing Portal in one command, just like Jetstream
 ```bash
 $ php artisan billing-portal:install
 ```
+
+### Stripe Checkout
+
+Starting with [Laravel Cashier v12.7.0](https://github.com/laravel/cashier-stripe/releases/tag/v12.7.0), you can now use Stripe Checkout for easier implementation. Jetstream Cashier Billing Portal supports this and will send the user directly to the Checkout portal for new subscriptions.
+
+Starting with package version 2.x, you will also need to set up [Stripe Webhooks](https://laravel.com/docs/master/billing#handling-stripe-webhooks) in your own project to benefit from Stripe Checkout, that is used by default. If not, check the `1.x` branch or `1.x` releases that do not use Stripe Checkout.
+
+The only thing you should do is to add the [Stripe Javascript SDK code](https://stripe.com/docs/js/including) **before** the `app.js` import in your `app.blade.php` file:
+
+```html
+<script src="https://js.stripe.com/v3/"></script>
+<script src="{{ mix('js/app.js') }}" defer></script>
+```
+
+### Cashier Register & defining plans
 
 Next up, you should use the [custom Cashier Register trait](https://github.com/renoki-co/cashier-register#preparing-the-model) instead of Cashier's one for your billable model.
 
@@ -112,6 +129,40 @@ class CashierRegisterServiceProvider extends BaseServiceProvider
 
         BillingPortal::setBillableOnRequest(function (Request $request) {
             return $request->user()->currentTeam;
+        });
+    }
+}
+```
+
+## Modifying Checkout
+
+You can intercept Checkout options on the fly:
+
+```php
+use Illuminate\Http\Request;
+use RenokiCo\BillingPortal\BillingPortal;
+
+class CashierRegisterServiceProvider extends BaseServiceProvider
+{
+    /**
+     * Boot the service provider.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
+
+        // Modify the checkout model.
+        BillingPortal::onCheckout(function ($checkout, Request $request, $billable, $plan, $subscription) {
+            return $checkout->allowPromotionCodes();
+        });
+
+        // Intercept the Stripe Checkout options.
+        BillingPortal::setStripeCheckoutOptions(function (Request $request, $billable, $plan, $subscription) {
+            return [
+                'payment_method_types' => ['card'],
+            ];
         });
     }
 }

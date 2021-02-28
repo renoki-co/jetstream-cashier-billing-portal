@@ -23,6 +23,8 @@ class BillingPortalServiceProvider extends ServiceProvider
 
         $this->loadRoutesFrom(__DIR__.'/../routes/'.config('jetstream.stack').'.php');
 
+        $this->loadViewsFrom(__DIR__.'/../resources/views/', 'jetstream-cashier-billing-portal');
+
         if ($this->app->runningInConsole()) {
             $this->commands([
                 Console\Commands\InstallCommand::class,

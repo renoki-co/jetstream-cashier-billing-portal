@@ -12,9 +12,11 @@ class InstallCommand extends JetstreamInstallCommand
      *
      * @var string
      */
-    protected $signature = 'billing-portal:install {stack=inertia}
-                                                   {--stripe=true}
-                                                   {--composer=global : Absolute path to the Composer binary which should be used to install packages}';
+    protected $signature = 'billing-portal:install
+        {stack : The development stack that should be installed}
+        {--stripe=true : Wether to install the Stripe version.}
+        {--composer=global : Absolute path to the Composer binary which should be used to install packages}
+    ';
 
     /**
      * The console command description.
@@ -42,7 +44,7 @@ class InstallCommand extends JetstreamInstallCommand
      */
     protected function installCashierRegisterStack()
     {
-        $this->requireComposerPackages('laravel/cashier:^12.6');
+        $this->requireComposerPackages('laravel/cashier:^12.9');
 
         $this->callSilent('vendor:publish', ['--provider' => 'RenokiCo\CashierRegister\CashierRegisterServiceProvider', '--tag' => 'config', '--force' => true]);
         $this->callSilent('vendor:publish', ['--provider' => 'RenokiCo\CashierRegister\CashierRegisterServiceProvider', '--tag' => 'migrations', '--force' => true]);
@@ -63,5 +65,9 @@ class InstallCommand extends JetstreamInstallCommand
 
         (new Filesystem)->copyDirectory(__DIR__.'/../../../stubs/inertia/resources/js/Pages/BillingPortal', resource_path('js/Pages/BillingPortal'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../../stubs/inertia/resources/js/BillingPortal', resource_path('js/BillingPortal'));
+
+        $this->line('');
+        $this->info('Inertia scaffolding for Cashier Billing Portal installed successfully.');
+        $this->comment('Please execute "npm install && npm run dev" to build your assets.');
     }
 }

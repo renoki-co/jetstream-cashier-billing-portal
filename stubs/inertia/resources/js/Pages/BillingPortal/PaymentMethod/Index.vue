@@ -59,16 +59,16 @@
                                             >
                                                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
-                                        </td>
 
-                                        <td class="px-6 py-4 whitespace-no-wrap text-center">
                                             <jet-secondary-button
-                                                v-if="! method.default"
+                                                v-else
                                                 @click.native="setAsDefault(method)"
                                             >
                                                 Set as default
                                             </jet-secondary-button>
+                                        </td>
 
+                                        <td class="px-6 py-4 whitespace-no-wrap text-center">
                                             <jet-danger-button @click.native="deletePaymentMethod(method)">
                                                 Delete
                                             </jet-danger-button>

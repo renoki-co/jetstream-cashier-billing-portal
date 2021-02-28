@@ -2,7 +2,6 @@
 
 namespace RenokiCo\BillingPortal\Test;
 
-use Carbon\Carbon;
 use RenokiCo\BillingPortal\Test\Models\User;
 
 class InvoiceTest extends TestCase
@@ -15,12 +14,14 @@ class InvoiceTest extends TestCase
 
         $this->actingAs($user)
             ->post(route('billing-portal.subscription.plan-subscribe', ['plan' => static::$stripeFreePlanId]))
-            ->assertRedirect(route('billing-portal.subscription.index'));
+            ->assertOk();
+
+        $user->newSubscription('main', static::$stripePlanId)->create('pm_card_visa');
 
         $invoices = $user->invoices()->map(function ($invoice) {
             return [
                 'description' => $invoice->lines->data[0]->description,
-                'created' => Carbon::parse($invoice->created)->diffForHumans(),
+                'created' => $invoice->created,
                 'paid' => $invoice->paid,
                 'status' => $invoice->status,
                 'url' => $invoice->hosted_invoice_url ?: null,

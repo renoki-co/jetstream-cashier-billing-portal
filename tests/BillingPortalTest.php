@@ -14,7 +14,7 @@ class BillingPortalTest extends TestCase
 
         $this->actingAs($user)
             ->post(route('billing-portal.subscription.plan-subscribe', ['plan' => static::$stripeFreePlanId]))
-            ->assertRedirect(route('billing-portal.subscription.index'));
+            ->assertOk();
 
         $this->actingAs($user)
             ->get(route('billing-portal.portal'))

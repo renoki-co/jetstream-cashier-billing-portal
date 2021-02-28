@@ -36,7 +36,9 @@ class SubscriptionTest extends TestCase
 
         $this->actingAs($user)
             ->post(route('billing-portal.subscription.plan-subscribe', ['plan' => static::$stripeFreePlanId]))
-            ->assertRedirect(route('billing-portal.subscription.index'));
+            ->assertOk();
+
+        $user->newSubscription('main', static::$stripeFreePlanId)->create('pm_card_us');
 
         $this->assertCount(1, $user->subscriptions);
     }
@@ -49,7 +51,7 @@ class SubscriptionTest extends TestCase
 
         $this->actingAs($user)
             ->post(route('billing-portal.subscription.plan-subscribe', ['plan' => static::$stripePlanId]))
-            ->assertRedirect(route('billing-portal.payment-method.index'));
+            ->assertOk();
 
         $this->assertCount(0, $user->subscriptions);
     }
@@ -75,11 +77,15 @@ class SubscriptionTest extends TestCase
 
         $this->actingAs($user)
             ->post(route('billing-portal.subscription.plan-subscribe', ['plan' => static::$stripeFreePlanId]))
-            ->assertRedirect(route('billing-portal.subscription.index'));
+            ->assertOk();
+
+        $user->newSubscription('main', static::$stripeFreePlanId)->create('pm_card_us');
+
+        $user->deletePaymentMethods();
 
         $this->actingAs($user)
             ->post(route('billing-portal.subscription.plan-swap', ['plan' => static::$stripePlanId]))
-            ->assertRedirect(route('billing-portal.payment-method.index'));
+            ->assertOk();
     }
 
     public function test_cancel_and_resume_plan()
@@ -90,7 +96,9 @@ class SubscriptionTest extends TestCase
 
         $this->actingAs($user)
             ->post(route('billing-portal.subscription.plan-subscribe', ['plan' => static::$stripeFreePlanId]))
-            ->assertRedirect(route('billing-portal.subscription.index'));
+            ->assertOk();
+
+        $user->newSubscription('main', static::$stripeFreePlanId)->create('pm_card_us');
 
         $this->actingAs($user)
             ->post(route('billing-portal.subscription.cancel'))
@@ -121,7 +129,11 @@ class SubscriptionTest extends TestCase
 
         $this->actingAs($user)
             ->post(route('billing-portal.subscription.plan-subscribe', ['plan' => static::$stripeFreePlanId]))
-            ->assertRedirect(route('billing-portal.subscription.index'));
+            ->assertOk();
+
+        $subscription = $user->newSubscription('main', static::$stripeFreePlanId)->create('pm_card_us');
+
+        BillingPortal::syncQuotas($user, $subscription);
 
         $this->assertTrue($synced);
     }

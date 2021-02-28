@@ -35,7 +35,7 @@
                                             {{ invoice.description }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-no-wrap text-center">
-                                            {{ invoice.created }}
+                                            {{ formatDate(invoice.created) }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-no-wrap text-center">
                                             <span
@@ -73,5 +73,23 @@ export default {
         AppLayout,
     },
     props: ['invoices'],
+    data: () => ({
+        dateFormatOptions: {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: false,
+        },
+    }),
+    methods: {
+        formatDate(unix) {
+            return new Intl.DateTimeFormat('en-GB', this.dateFormatOptions).format(
+                new Date(unix * 1000)
+            );
+        },
+    },
 }
 </script>

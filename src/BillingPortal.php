@@ -5,6 +5,7 @@ namespace RenokiCo\BillingPortal;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use RenokiCo\CashierRegister\Plan;
 
 class BillingPortal
 {
@@ -22,6 +23,22 @@ class BillingPortal
      * @var null|Closure
      */
     protected static $billableOnRequest;
+
+    /**
+     * The closure that will be called to get
+     * the right Stripe Checkout parameters to call.
+     *
+     * @var null|Closure
+     */
+    protected static $stripeCheckoutOptions;
+
+    /**
+     * The closure that will be called to modify
+     * the Stripe Checkout flow.
+     *
+     * @var null|Closure
+     */
+    protected static $stripeCheckoutInterceptor;
 
     /**
      * Register a method that will run when the
@@ -76,5 +93,66 @@ class BillingPortal
         return $closure
             ? $closure($request)
             : $request->user();
+    }
+
+    /**
+     * Set the Stripe Checkout options computator.
+     *
+     * @param  \Closure  $callback
+     * @return void
+     */
+    public static function setStripeCheckoutOptions(Closure $callback)
+    {
+        static::$stripeCheckoutOptions = $callback;
+    }
+
+    /**
+     * Calculate the options for Stripe Checkout for
+     * a specific Billable mode, plan and subscription name.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $billable
+     * @param  \RenokiCo\CashierRegister\Plan  $plan
+     * @param  string  $subscription
+     * @return array
+     */
+    public static function getOptionsForStripeCheckout(Request $request, $billable, Plan $plan, string $subscription): array
+    {
+        $closure = static::$stripeCheckoutOptions;
+
+        return $closure
+            ? $closure($request, $billable, $plan, $subscription)
+            : [];
+    }
+
+    /**
+     * Set the Stripe Checkout interceptor.
+     *
+     * @param  \Closure  $callback
+     * @return void
+     */
+    public static function onCheckout(Closure $callback)
+    {
+        static::$stripeCheckoutInterceptor = $callback;
+    }
+
+    /**
+     * Mutate the Stripe checkout for
+     * a specific Billable mode, plan and subscription name.
+     *
+     * @param  \Laravel\Cashier\SubscriptionBuilder  $checkout
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $billable
+     * @param  \RenokiCo\CashierRegister\Plan  $plan
+     * @param  string  $subscription
+     * @return \Laravel\Cashier\SubscriptionBuilder
+     */
+    public static function mutateCheckout($checkout, Request $request, $billable, Plan $plan, string $subscription)
+    {
+        $closure = static::$stripeCheckoutInterceptor;
+
+        return $closure
+            ? $closure($checkout, $request, $billable, $plan, $subscription)
+            : $checkout;
     }
 }
