@@ -17,6 +17,8 @@ class InvoiceTest extends TestCase
             ->post(route('billing-portal.subscription.plan-subscribe', ['plan' => static::$stripeFreePlanId]))
             ->assertOk();
 
+        $user->newSubscription('main', static::$stripePlanId)->create('pm_card_visa');
+
         $invoices = $user->invoices()->map(function ($invoice) {
             return [
                 'description' => $invoice->lines->data[0]->description,
