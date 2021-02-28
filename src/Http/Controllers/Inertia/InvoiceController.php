@@ -2,7 +2,6 @@
 
 namespace RenokiCo\BillingPortal\Http\Controllers\Inertia;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;

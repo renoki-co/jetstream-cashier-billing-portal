@@ -2,7 +2,6 @@
 
 namespace RenokiCo\BillingPortal\Test;
 
-use Carbon\Carbon;
 use RenokiCo\BillingPortal\Test\Models\User;
 
 class InvoiceTest extends TestCase
