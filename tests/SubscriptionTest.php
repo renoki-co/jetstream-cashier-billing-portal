@@ -38,6 +38,8 @@ class SubscriptionTest extends TestCase
             ->post(route('billing-portal.subscription.plan-subscribe', ['plan' => static::$stripeFreePlanId]))
             ->assertOk();
 
+        $user->newSubscription('main', static::$stripeFreePlanId)->create('pm_card_us');
+
         $this->assertCount(1, $user->subscriptions);
     }
 
@@ -77,6 +79,8 @@ class SubscriptionTest extends TestCase
             ->post(route('billing-portal.subscription.plan-subscribe', ['plan' => static::$stripeFreePlanId]))
             ->assertOk();
 
+        $user->newSubscription('main', static::$stripeFreePlanId)->create('pm_card_us');
+
         $this->actingAs($user)
             ->post(route('billing-portal.subscription.plan-swap', ['plan' => static::$stripePlanId]))
             ->assertRedirect(route('billing-portal.payment-method.index'));
@@ -91,6 +95,8 @@ class SubscriptionTest extends TestCase
         $this->actingAs($user)
             ->post(route('billing-portal.subscription.plan-subscribe', ['plan' => static::$stripeFreePlanId]))
             ->assertOk();
+
+        $user->newSubscription('main', static::$stripeFreePlanId)->create('pm_card_us');
 
         $this->actingAs($user)
             ->post(route('billing-portal.subscription.cancel'))
@@ -122,6 +128,10 @@ class SubscriptionTest extends TestCase
         $this->actingAs($user)
             ->post(route('billing-portal.subscription.plan-subscribe', ['plan' => static::$stripeFreePlanId]))
             ->assertOk();
+
+        $subscription = $user->newSubscription('main', static::$stripeFreePlanId)->create('pm_card_us');
+
+        BillingPortal::syncQuotas($user, $subscription);
 
         $this->assertTrue($synced);
     }

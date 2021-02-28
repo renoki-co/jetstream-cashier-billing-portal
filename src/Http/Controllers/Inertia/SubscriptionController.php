@@ -94,7 +94,7 @@ class SubscriptionController extends Controller
         $subscription = $this->getCurrentSubscription($user, $request->subscription);
 
         if ($plan->getPrice() > 0.00 && ! $user->defaultPaymentMethod()) {
-            return $this->redirectToAddPaymentMethod();
+            return $this->subscribeToPlan($request, $newPlanId);
         }
 
         if (! $user->subscribed($subscription->name, $plan->getId())) {
