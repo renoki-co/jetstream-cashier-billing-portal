@@ -101,7 +101,7 @@ export default {
         'intent',
         'stripe_key',
     ],
-    data () {
+    data() {
         return {
             stripe: null,
             card: null,
@@ -111,7 +111,7 @@ export default {
             cvc: null,
         };
     },
-    mounted () {
+    mounted() {
         this.stripe = Stripe(this.stripe_key);
 
         this.card = this.stripe.elements();
@@ -153,12 +153,15 @@ export default {
         this.cvc.mount('#card-cvc');
     },
     methods: {
-        async addPaymentMethod () {
+        /**
+         * Submit the payment method form.
+         */
+        async addPaymentMethod() {
             const { paymentMethod, error } = await this.stripe.createPaymentMethod(
                 'card', this.number, { billing_details: { name: this.name } }
             );
 
-            if (! error) {
+            if (!error) {
                 this.$inertia.post(this.route('billing-portal.payment-method.store'), { token: paymentMethod.id });
             }
         },

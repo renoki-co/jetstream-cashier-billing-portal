@@ -67,6 +67,7 @@ export default {
         JetSecondaryButton,
         PlanSlide,
     },
+
     props: [
         'currentPlan',
         'hasDefaultPaymentMethod',

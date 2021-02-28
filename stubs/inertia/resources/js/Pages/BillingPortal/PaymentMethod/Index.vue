@@ -104,9 +104,9 @@ export default {
         /**
          * Set the default payment method.
          *
-         * @param  Object  method
+         * @param {Object} method
          */
-        setAsDefault (method) {
+        setAsDefault(method) {
             this.$inertia.post(
                 this.route('billing-portal.payment-method.default', { payment_method: method.id })
             );
@@ -115,9 +115,9 @@ export default {
         /**
          * Delete a payment method.
          *
-         * @param  Object  method
+         * @param {Object} method
          */
-        deletePaymentMethod (method) {
+        deletePaymentMethod(method) {
             this.$inertia.delete(
                 this.route('billing-portal.payment-method.destroy', { payment_method: method.id })
             )

@@ -72,7 +72,9 @@ export default {
     components: {
         AppLayout,
     },
+
     props: ['invoices'],
+
     data: () => ({
         dateFormatOptions: {
             year: 'numeric',
@@ -84,7 +86,14 @@ export default {
             hour12: false,
         },
     }),
+
     methods: {
+
+        /**
+         * Format the given unix date to a human readable one.
+         *
+         * @param {number} unix
+         */
         formatDate(unix) {
             return new Intl.DateTimeFormat('en-GB', this.dateFormatOptions).format(
                 new Date(unix * 1000)

@@ -61,7 +61,7 @@
             </template>
             <template v-else>
                 <jet-button
-                    v-if="! currentPlan"
+                    v-if="!currentPlan"
                     @click.native="subscribeToPlan(plan.id)"
                 >
                     Subscribe
@@ -108,6 +108,7 @@ export default {
         JetButton,
         JetSecondaryButton,
     },
+
     props: [
         'plan',
         'active',
@@ -119,42 +120,37 @@ export default {
         'endingDate',
         'disable',
     ],
+
     methods: {
         /**
          * Subscribe to a new plan.
          *
-         * @param  string  planId
-         * @return void
+         * @param {string} planId
          */
-        subscribeToPlan (planId) {
+        subscribeToPlan(planId) {
             this.$inertia.post(this.route('billing-portal.subscription.plan-subscribe', { plan: planId }));
         },
 
         /**
          * Swap to a new plan.
          *
-         * @param  string  planId
-         * @return void
+         * @param {string} planId
          */
-        swapPlan (planId) {
+        swapPlan(planId) {
             this.$inertia.post(this.route('billing-portal.subscription.plan-swap', { plan: planId }));
         },
 
         /**
          * Cancel the current subscription.
-         *
-         * @return void
          */
-        cancelSubscription () {
+        cancelSubscription() {
             this.$inertia.post(this.route('billing-portal.subscription.cancel'));
         },
 
         /**
          * Resume the current subscription.
-         *
-         * @return void
          */
-        resumeSubscription () {
+        resumeSubscription() {
             this.$inertia.post(this.route('billing-portal.subscription.resume'));
         },
     },
