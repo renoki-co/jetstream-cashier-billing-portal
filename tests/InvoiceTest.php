@@ -15,7 +15,7 @@ class InvoiceTest extends TestCase
 
         $this->actingAs($user)
             ->post(route('billing-portal.subscription.plan-subscribe', ['plan' => static::$stripeFreePlanId]))
-            ->assertRedirect(route('billing-portal.subscription.index'));
+            ->assertOk();
 
         $invoices = $user->invoices()->map(function ($invoice) {
             return [
