@@ -22,7 +22,7 @@ class InvoiceTest extends TestCase
         $invoices = $user->invoices()->map(function ($invoice) {
             return [
                 'description' => $invoice->lines->data[0]->description,
-                'created' => Carbon::parse($invoice->created)->diffForHumans(),
+                'created' => $invoice->created,
                 'paid' => $invoice->paid,
                 'status' => $invoice->status,
                 'url' => $invoice->hosted_invoice_url ?: null,
