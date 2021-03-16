@@ -4,11 +4,11 @@ namespace RenokiCo\BillingPortal\Test\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use RenokiCo\CashierRegister\BillableWithStripe;
+use Laravel\Cashier\Billable;
 
 class User extends Authenticatable
 {
-    use BillableWithStripe;
+    use Billable;
     use HasFactory;
 
     protected $fillable = [

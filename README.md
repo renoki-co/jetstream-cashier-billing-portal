@@ -54,20 +54,7 @@ The only thing you should do is to add the [Stripe Javascript SDK code](https://
 <script src="{{ mix('js/app.js') }}" defer></script>
 ```
 
-### Cashier Register & defining plans
-
-Next up, you should use the [custom Cashier Register trait](https://github.com/renoki-co/cashier-register#preparing-the-model) instead of Cashier's one for your billable model.
-
-```php
-use RenokiCo\CashierRegister\BillableWithStripe;
-
-class User extends Model
-{
-    use BillableWithStripe;
-
-    //
-}
-```
+### Defining Plans
 
 You will also have to [prepare the plans](https://github.com/renoki-co/cashier-register#preparing-the-plans) in `CashierRegisterServiceProvider`.
 
