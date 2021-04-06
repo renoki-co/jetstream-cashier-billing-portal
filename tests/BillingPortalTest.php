@@ -18,6 +18,6 @@ class BillingPortalTest extends TestCase
 
         $this->actingAs($user)
             ->get(route('billing-portal.portal'))
-            ->assertStatus(302);
+            ->assertStatus(409);
     }
 }

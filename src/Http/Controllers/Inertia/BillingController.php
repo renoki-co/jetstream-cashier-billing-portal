@@ -5,7 +5,7 @@ namespace RenokiCo\BillingPortal\Http\Controllers\Inertia;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Redirect;
+use Inertia\Inertia;
 use RenokiCo\BillingPortal\BillingPortal;
 
 class BillingController extends Controller
@@ -19,7 +19,7 @@ class BillingController extends Controller
     public function portal(Request $request)
     {
         return $this->getBillingPortalRedirect(
-            BillingPortal::getBillableFromRequest($request), false
+            BillingPortal::getBillableFromRequest($request)
         );
     }
 
@@ -27,17 +27,14 @@ class BillingController extends Controller
      * Get the billing portal redirect response.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  bool  $asResponse
      * @return Illuminate\Routing\Redirector|\Illuminate\Http\Response
      */
-    protected function getBillingPortalRedirect(Model $user, bool $asResponse = true)
+    protected function getBillingPortalRedirect(Model $user)
     {
         $user->createOrGetStripeCustomer();
 
-        $url = $user->billingPortalUrl(route('billing-portal.subscription.index'));
-
-        return $asResponse
-            ? response('', 409)->header('X-Inertia-Location', $url)
-            : Redirect::to($url);
+        return Inertia::location(
+            $user->billingPortalUrl(route('billing-portal.subscription.index'))
+        );
     }
 }
