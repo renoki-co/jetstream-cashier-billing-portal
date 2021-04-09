@@ -31,7 +31,7 @@
         "test": "vendor/bin/phpunit"
     },
     "require-dev": {
-        "claudiodekker/inertia-laravel-testing": "^1.2.0",
+        "claudiodekker/inertia-laravel-testing": "^2.2.5",
         "doctrine/dbal": "^2.6|^3.0",
         "laravel/legacy-factories": "^1.1",
         "mockery/mockery": "^1.4",
