@@ -27,6 +27,10 @@ If you are using your application in your day-to-day job, on presentation demos,
 
 This package assumes you have installed Jetstream in your project. If not, head over to [Jetstream website](https://jetstream.laravel.com) for installation steps.
 
+### Cashier
+
+Make sure to have installed Cashier as explained in the [Cashier documentation](https://laravel.com/docs/8.x/billing), including the billable traits and tables, because Jetstream Cashier Billing Portal **WILL NOT** install them for you.
+
 ### Scaffolding
 
 You can install the package via composer:
@@ -38,7 +42,7 @@ composer require renoki-co/jetstream-cashier-billing-portal
 You shall install the Cashier Billing Portal in one command, just like Jetstream. This will install Cashier, Cashier Register and Billing Portal.
 
 ```bash
-$ php artisan billing-portal:install
+$ php artisan billing-portal:install inertia
 ```
 
 ### Stripe Checkout
