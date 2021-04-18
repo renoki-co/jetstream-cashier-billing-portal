@@ -12,7 +12,6 @@
         }
     ],
     "require": {
-        "php": "^7.3|^8.0",
         "laravel/jetstream": "^2.3",
         "renoki-co/cashier-register": "^4.0"
     },
