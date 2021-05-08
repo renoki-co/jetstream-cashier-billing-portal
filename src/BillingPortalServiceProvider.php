@@ -3,6 +3,8 @@
 namespace RenokiCo\BillingPortal;
 
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
+use RenokiCo\BillingPortal\Http\Livewire\PlanSlide;
 
 class BillingPortalServiceProvider extends ServiceProvider
 {
@@ -30,6 +32,9 @@ class BillingPortalServiceProvider extends ServiceProvider
                 Console\Commands\InstallCommand::class,
             ]);
         }
+
+        // Livewire
+        Livewire::component('plan-slide', PlanSlide::class);
     }
 
     /**
