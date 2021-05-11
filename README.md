@@ -15,6 +15,22 @@ Currently, only Inertia with Stripe are supported. For Paddle and/or Livewire, a
 
 ![example](example.png)
 
+- [Jetstream Cashier Billing Portal](#jetstream-cashier-billing-portal)
+  - [🤝 Supporting](#-supporting)
+  - [🚀 Installation](#-installation)
+    - [Cashier](#cashier)
+    - [Scaffolding](#scaffolding)
+    - [Stripe Checkout](#stripe-checkout)
+    - [Defining Plans](#defining-plans)
+  - [🙌 Usage](#-usage)
+    - [Custom Billables](#custom-billables)
+    - [Modifying Checkout](#modifying-checkout)
+    - [Proration Between Swaps](#proration-between-swaps)
+  - [🐛 Testing](#-testing)
+  - [🤝 Contributing](#-contributing)
+  - [🔒  Security](#--security)
+  - [🎉 Credits](#-credits)
+
 ## 🤝 Supporting
 
 Renoki Co. on GitHub aims on bringing a lot of open source projects and helpful projects to the world. Developing and maintaining projects everyday is a harsh work and tho, we love it.
@@ -99,7 +115,7 @@ By default, the subscriptions are accessible under `/user/billing/subscription`,
 
 For more information about defining plans and quotas, check [Cashier Register documentation](https://github.com/renoki-co/cashier-register) and check [Laravel Cashier for Stripe documentation](https://laravel.com/docs/8.x/billing) on handling the billing.
 
-## Custom Billables
+### Custom Billables
 
 By default, the billing is made directly on the currently authenticated model. In some cases like using billable trait on the Team model, you may change the model that will be retrieved from the current request. You may define it in the `boot()` method of `CashierRegisterServiceProvider`:
 
@@ -125,7 +141,7 @@ class CashierRegisterServiceProvider extends BaseServiceProvider
 }
 ```
 
-## Modifying Checkout
+### Modifying Checkout
 
 You can intercept Checkout options on the fly:
 
@@ -155,6 +171,29 @@ class CashierRegisterServiceProvider extends BaseServiceProvider
                 'payment_method_types' => ['card'],
             ];
         });
+    }
+}
+```
+
+### Proration Between Swaps
+
+By default, Billing Portal prorates the swap between plans. If you wish to not prorate the subscription between swaps, you can specify this in your service provider:
+
+```php
+use RenokiCo\BillingPortal\BillingPortal;
+
+class CashierRegisterServiceProvider extends BaseServiceProvider
+{
+    /**
+     * Boot the service provider.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
+
+        BillingPortal::dontProrateOnSwap();
     }
 }
 ```

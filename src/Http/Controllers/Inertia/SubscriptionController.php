@@ -107,9 +107,16 @@ class SubscriptionController extends Controller
         if (! $billable->subscribed($subscription->name, $plan->getId())) {
             $hasValidSubscription = $subscription && $subscription->valid();
 
-            $subscription = $hasValidSubscription
-                ? $subscription->swap($newPlanId)
-                : $billable->newSubscription($request->subscription, $newPlanId)->create(optional($billable->defaultPaymentMethod())->id);
+            $subscription = value(function () use ($hasValidSubscription, $subscription, $newPlanId, $request, $billable) {
+                if ($hasValidSubscription) {
+                    return BillingPortal::proratesOnSwap()
+                        ? $subscription->swap($newPlanId)
+                        : $subscription->noProrate()->swap($newPlanId);
+                }
+
+                return $billable->newSubscription($request->subscription, $newPlanId)
+                    ->create(optional($billable->defaultPaymentMethod())->id);
+            });
         }
 
         BillingPortal::syncQuotas($billable, $subscription);
