@@ -8,13 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use Laravel\Jetstream\InteractsWithBanner;
 use RenokiCo\BillingPortal\BillingPortal;
 
 class PaymentMethodController extends Controller
 {
-    use InteractsWithBanner;
-
     /**
      * Initialize the controller.
      *
@@ -97,7 +94,7 @@ class PaymentMethodController extends Controller
         }
 
         return Redirect::route('billing-portal.payment-method.index')
-            ->banner('The new payment method got added!');
+            ->with('flash.banner', 'The new payment method got added!');
     }
 
     /**
@@ -113,7 +110,7 @@ class PaymentMethodController extends Controller
             $paymentMethod = BillingPortal::getBillable($request)->findPaymentMethod($paymentMethod);
         } catch (Exception $e) {
             return Redirect::route('billing-portal.payment-method.index')
-                ->banner('The payment method got removed!');
+                ->with('flash.banner', 'The payment method got removed!');
         }
 
         if ($paymentMethod) {
@@ -121,7 +118,7 @@ class PaymentMethodController extends Controller
         }
 
         return Redirect::route('billing-portal.payment-method.index')
-            ->banner('The payment method got removed!');
+            ->with('flash.banner', 'The payment method got removed!');
     }
 
     /**
@@ -137,10 +134,10 @@ class PaymentMethodController extends Controller
             BillingPortal::getBillable($request)->updateDefaultPaymentMethod($paymentMethod);
         } catch (Exception $e) {
             return Redirect::route('billing-portal.payment-method.index')
-                ->banner('The default payment method got updated!');
+                ->with('flash.banner', 'The default payment method got updated!');
         }
 
         return Redirect::route('billing-portal.payment-method.index')
-            ->banner('The default payment method got updated!');
+            ->with('flash.banner', 'The default payment method got updated!');
     }
 }

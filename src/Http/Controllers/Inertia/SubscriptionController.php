@@ -7,14 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use Laravel\Jetstream\InteractsWithBanner;
 use RenokiCo\BillingPortal\BillingPortal;
 use RenokiCo\CashierRegister\Saas;
 
 class SubscriptionController extends Controller
 {
-    use InteractsWithBanner;
-
     /**
      * Initialize the controller.
      *
@@ -72,7 +69,10 @@ class SubscriptionController extends Controller
 
         $checkout = BillingPortal::mutateCheckout(
             $user->newSubscription($request->subscription, $planId),
-            $request, $user, $plan, $request->subscription
+            $request,
+            $user,
+            $plan,
+            $request->subscription
         )->checkout($checkoutOptions);
 
         return view('jetstream-cashier-billing-portal::checkout', [
@@ -94,7 +94,11 @@ class SubscriptionController extends Controller
 
         $billable = BillingPortal::getBillable($request);
 
-        $subscription = $this->getCurrentSubscription($billable, $request->subscription);
+        if (! $subscription = $this->getCurrentSubscription($billable, $request->subscription)) {
+            return Redirect::route('billing-portal.subscription.index')
+                ->with('flash.banner', "The subscription {$request->subscription} does not exist.")
+                ->with('flash.bannerStyle', 'danger');
+        }
 
         if ($plan->getPrice() > 0.00 && ! $billable->defaultPaymentMethod()) {
             return $this->subscribeToPlan($request, $newPlanId);
@@ -111,7 +115,7 @@ class SubscriptionController extends Controller
         BillingPortal::syncQuotas($billable, $subscription);
 
         return Redirect::route('billing-portal.subscription.index')
-            ->banner("The plan got successfully changed to {$plan->getName()}!");
+            ->with('flash.banner', "The plan got successfully changed to {$plan->getName()}!");
     }
 
     /**
@@ -124,10 +128,10 @@ class SubscriptionController extends Controller
     {
         $billable = BillingPortal::getBillable($request);
 
-        $subscription = $this->getCurrentSubscription($billable, $request->subscription);
-
-        if (! $subscription) {
-
+        if (! $subscription = $this->getCurrentSubscription($billable, $request->subscription)) {
+            return Redirect::route('billing-portal.subscription.index')
+                ->with('flash.banner', "The subscription {$request->subscription} does not exist.")
+                ->with('flash.bannerStyle', 'danger');
         }
 
         if ($subscription->onGracePeriod()) {
@@ -137,7 +141,7 @@ class SubscriptionController extends Controller
         BillingPortal::syncQuotas($billable, $subscription);
 
         return Redirect::route('billing-portal.subscription.index')
-            ->banner('The subscription has been resumed.');
+            ->with('flash.banner', 'The subscription has been resumed.');
     }
 
     /**
@@ -150,7 +154,11 @@ class SubscriptionController extends Controller
     {
         $billable = BillingPortal::getBillable($request);
 
-        $subscription = $this->getCurrentSubscription($user, $request->subscription);
+        if (! $subscription = $this->getCurrentSubscription($billable, $request->subscription)) {
+            return Redirect::route('billing-portal.subscription.index')
+                ->with('flash.banner', "The subscription {$request->subscription} does not exist.")
+                ->with('flash.bannerStyle', 'danger');
+        }
 
         if ($subscription->recurring()) {
             $subscription->cancel();
@@ -159,7 +167,7 @@ class SubscriptionController extends Controller
         BillingPortal::syncQuotas($billable, $subscription);
 
         return Redirect::route('billing-portal.subscription.index')
-            ->banner('The current subscription got cancelled!');
+            ->with('flash.banner', 'The current subscription got cancelled!');
     }
 
     /**
