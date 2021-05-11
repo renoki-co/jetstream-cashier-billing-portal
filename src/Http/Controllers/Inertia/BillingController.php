@@ -26,15 +26,15 @@ class BillingController extends Controller
     /**
      * Get the billing portal redirect response.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  \Illuminate\Database\Eloquent\Model  $billable
      * @return Illuminate\Routing\Redirector|\Illuminate\Http\Response
      */
-    protected function getBillingPortalRedirect(Model $user)
+    protected function getBillingPortalRedirect(Model $billable)
     {
-        $user->createOrGetStripeCustomer();
+        $billable->createOrGetStripeCustomer();
 
         return Inertia::location(
-            $user->billingPortalUrl(route('billing-portal.subscription.index'))
+            $billable->billingPortalUrl(route('billing-portal.subscription.index'))
         );
     }
 }

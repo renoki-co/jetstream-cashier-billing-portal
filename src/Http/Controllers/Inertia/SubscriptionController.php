@@ -33,14 +33,14 @@ class SubscriptionController extends Controller
      */
     public function index(Request $request)
     {
-        $user = BillingPortal::getBillable($request);
+        $billable = BillingPortal::getBillable($request);
 
-        $subscription = $this->getCurrentSubscription($user, $request->subscription);
+        $subscription = $this->getCurrentSubscription($billable, $request->subscription);
 
         return Inertia::render('BillingPortal/Subscription/Index', [
             'currentPlan' => $subscription ? $subscription->getPlan() : null,
-            'hasDefaultPaymentMethod' => $user->hasDefaultPaymentMethod(),
-            'paymentMethods' => $user->paymentMethods(),
+            'hasDefaultPaymentMethod' => $billable->hasDefaultPaymentMethod(),
+            'paymentMethods' => $billable->paymentMethods(),
             'plans' => Saas::getPlans(),
             'recurring' => $subscription ? $subscription->recurring() : false,
             'cancelled' => $subscription ? $subscription->cancelled() : false,
@@ -58,19 +58,19 @@ class SubscriptionController extends Controller
      */
     public function subscribeToPlan(Request $request, string $planId)
     {
-        $user = BillingPortal::getBillable($request);
+        $billable = BillingPortal::getBillable($request);
 
         $plan = Saas::getPlan($planId);
 
         $checkoutOptions = array_merge([
             'success_url' => route('billing-portal.subscription.index', ['success' => "You have successfully subscribed to {$plan->getName()}!"]),
             'cancel_url' => route('billing-portal.subscription.index', ['error' => "The subscription to {$plan->getName()} was cancelled!"]),
-        ], BillingPortal::getStripeCheckoutOptions($request, $user, $plan, $request->subscription));
+        ], BillingPortal::getStripeCheckoutOptions($request, $billable, $plan, $request->subscription));
 
         $checkout = BillingPortal::mutateCheckout(
-            $user->newSubscription($request->subscription, $planId),
+            $billable->newSubscription($request->subscription, $planId),
             $request,
-            $user,
+            $billable,
             $plan,
             $request->subscription
         )->checkout($checkoutOptions);
@@ -171,14 +171,14 @@ class SubscriptionController extends Controller
     }
 
     /**
-     * Get the current user subscription.
+     * Get the current billable subscription.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $user
+     * @param  \Illuminate\Database\Eloquent\Model  $billable
      * @param  string  $subscription
      * @return \Laravel\Cashier\Subscription|null
      */
-    protected function getCurrentSubscription(Model $user, string $subscription)
+    protected function getCurrentSubscription(Model $billable, string $subscription)
     {
-        return $user->subscription($subscription);
+        return $billable->subscription($subscription);
     }
 }
