@@ -116,7 +116,7 @@ class BillingPortal
      * @param  string  $subscription
      * @return array
      */
-    public static function getOptionsForStripeCheckout(Request $request, $billable, Plan $plan, string $subscription): array
+    public static function getStripeCheckoutOptions(Request $request, $billable, Plan $plan, string $subscription): array
     {
         $closure = static::$stripeCheckoutOptions;
 

@@ -68,7 +68,7 @@ class SubscriptionController extends Controller
         $checkoutOptions = array_merge([
             'success_url' => route('billing-portal.subscription.index', ['success' => "You have successfully subscribed to {$plan->getName()}!"]),
             'cancel_url' => route('billing-portal.subscription.index', ['error' => "The subscription to {$plan->getName()} was cancelled!"]),
-        ], BillingPortal::getOptionsForStripeCheckout($request, $user, $plan, $request->subscription));
+        ], BillingPortal::getStripeCheckoutOptions($request, $user, $plan, $request->subscription));
 
         $checkout = BillingPortal::mutateCheckout(
             $user->newSubscription($request->subscription, $planId),
