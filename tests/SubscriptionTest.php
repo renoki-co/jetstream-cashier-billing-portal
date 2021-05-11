@@ -121,7 +121,7 @@ class SubscriptionTest extends TestCase
 
         $synced = false;
 
-        BillingPortal::onSyncingQuotas(function ($user, $subscription) use (&$synced) {
+        BillingPortal::resolveQuotasSync(function ($user, $subscription) use (&$synced) {
             $this->assertTrue($subscription->user->is($user));
 
             $synced = true;

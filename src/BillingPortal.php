@@ -47,7 +47,7 @@ class BillingPortal
      * @param  \Closure  $callback
      * @return void
      */
-    public static function onSyncingQuotas(Closure $callback)
+    public static function resolveQuotasSync(Closure $callback)
     {
         static::$syncQuotasCallback = $callback;
     }
