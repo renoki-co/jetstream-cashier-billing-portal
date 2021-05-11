@@ -19,7 +19,7 @@ class BillingController extends Controller
     public function portal(Request $request)
     {
         return $this->getBillingPortalRedirect(
-            BillingPortal::resolveBillable($request)
+            BillingPortal::getBillable($request)
         );
     }
 

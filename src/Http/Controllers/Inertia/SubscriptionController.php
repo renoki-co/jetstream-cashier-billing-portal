@@ -36,7 +36,7 @@ class SubscriptionController extends Controller
      */
     public function index(Request $request)
     {
-        $user = BillingPortal::resolveBillable($request);
+        $user = BillingPortal::getBillable($request);
 
         $subscription = $this->getCurrentSubscription($user, $request->subscription);
 
@@ -61,7 +61,7 @@ class SubscriptionController extends Controller
      */
     public function subscribeToPlan(Request $request, string $planId)
     {
-        $user = BillingPortal::resolveBillable($request);
+        $user = BillingPortal::getBillable($request);
 
         $plan = Saas::getPlan($planId);
 
@@ -92,7 +92,7 @@ class SubscriptionController extends Controller
     {
         $plan = Saas::getPlan($newPlanId);
 
-        $billable = BillingPortal::resolveBillable($request);
+        $billable = BillingPortal::getBillable($request);
 
         $subscription = $this->getCurrentSubscription($billable, $request->subscription);
 
@@ -122,7 +122,7 @@ class SubscriptionController extends Controller
      */
     public function resumeSubscription(Request $request)
     {
-        $billable = BillingPortal::resolveBillable($request);
+        $billable = BillingPortal::getBillable($request);
 
         $subscription = $this->getCurrentSubscription($billable, $request->subscription);
 
@@ -148,7 +148,7 @@ class SubscriptionController extends Controller
      */
     public function cancelSubscription(Request $request)
     {
-        $billable = BillingPortal::resolveBillable($request);
+        $billable = BillingPortal::getBillable($request);
 
         $subscription = $this->getCurrentSubscription($user, $request->subscription);
 
