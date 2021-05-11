@@ -6,12 +6,15 @@ use Closure;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use Redirect;
+use Laravel\Jetstream\InteractsWithBanner;
 use RenokiCo\BillingPortal\BillingPortal;
 
 class PaymentMethodController extends Controller
 {
+    use InteractsWithBanner;
+
     /**
      * Initialize the controller.
      *
@@ -94,7 +97,7 @@ class PaymentMethodController extends Controller
         }
 
         return Redirect::route('billing-portal.payment-method.index')
-            ->with('success', 'The new payment method got added!');
+            ->banner('The new payment method got added!');
     }
 
     /**
@@ -110,7 +113,7 @@ class PaymentMethodController extends Controller
             $paymentMethod = BillingPortal::resolveBillable($request)->findPaymentMethod($paymentMethod);
         } catch (Exception $e) {
             return Redirect::route('billing-portal.payment-method.index')
-                ->with('success', 'The payment method got removed!');
+                ->banner('The payment method got removed!');
         }
 
         if ($paymentMethod) {
@@ -118,7 +121,7 @@ class PaymentMethodController extends Controller
         }
 
         return Redirect::route('billing-portal.payment-method.index')
-            ->with('success', 'The payment method got removed!');
+            ->banner('The payment method got removed!');
     }
 
     /**
@@ -134,10 +137,10 @@ class PaymentMethodController extends Controller
             BillingPortal::resolveBillable($request)->updateDefaultPaymentMethod($paymentMethod);
         } catch (Exception $e) {
             return Redirect::route('billing-portal.payment-method.index')
-                ->with('success', 'The default payment method got updated!');
+                ->banner('The default payment method got updated!');
         }
 
         return Redirect::route('billing-portal.payment-method.index')
-            ->with('success', 'The default payment method got updated!');
+            ->banner('The default payment method got updated!');
     }
 }

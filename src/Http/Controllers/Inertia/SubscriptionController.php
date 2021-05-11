@@ -5,13 +5,16 @@ namespace RenokiCo\BillingPortal\Http\Controllers\Inertia;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use Redirect;
+use Laravel\Jetstream\InteractsWithBanner;
 use RenokiCo\BillingPortal\BillingPortal;
 use RenokiCo\CashierRegister\Saas;
 
 class SubscriptionController extends Controller
 {
+    use InteractsWithBanner;
+
     /**
      * Initialize the controller.
      *
@@ -108,7 +111,7 @@ class SubscriptionController extends Controller
         BillingPortal::syncQuotas($billable, $subscription);
 
         return Redirect::route('billing-portal.subscription.index')
-            ->with('success', "The plan got successfully changed to {$plan->getName()}!");
+            ->banner("The plan got successfully changed to {$plan->getName()}!");
     }
 
     /**
@@ -123,6 +126,10 @@ class SubscriptionController extends Controller
 
         $subscription = $this->getCurrentSubscription($billable, $request->subscription);
 
+        if (! $subscription) {
+
+        }
+
         if ($subscription->onGracePeriod()) {
             $subscription->resume();
         }
@@ -130,7 +137,7 @@ class SubscriptionController extends Controller
         BillingPortal::syncQuotas($billable, $subscription);
 
         return Redirect::route('billing-portal.subscription.index')
-            ->with('success', 'The subscription has been resumed.');
+            ->banner('The subscription has been resumed.');
     }
 
     /**
@@ -152,7 +159,7 @@ class SubscriptionController extends Controller
         BillingPortal::syncQuotas($billable, $subscription);
 
         return Redirect::route('billing-portal.subscription.index')
-            ->with('success', 'The current subscription got cancelled!');
+            ->banner('The current subscription got cancelled!');
     }
 
     /**
@@ -160,7 +167,7 @@ class SubscriptionController extends Controller
      *
      * @param  \Illuminate\Database\Eloquent\Model  $user
      * @param  string  $subscription
-     * @return Laravel\Cashier\Subscription|null
+     * @return \Laravel\Cashier\Subscription|null
      */
     protected function getCurrentSubscription(Model $user, string $subscription)
     {
