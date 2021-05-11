@@ -51,7 +51,7 @@ abstract class TestCase extends Orchestra
                 Saas::feature('Seats', 'teams', 5)->notResettable(),
             ]);
 
-        BillingPortal::setBillableOnRequest(function (Request $request) {
+        BillingPortal::resolveBillable(function (Request $request) {
             return $request->user();
         });
 

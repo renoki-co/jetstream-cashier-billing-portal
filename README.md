@@ -118,7 +118,7 @@ class CashierRegisterServiceProvider extends BaseServiceProvider
     {
         parent::boot();
 
-        BillingPortal::setBillableOnRequest(function (Request $request) {
+        BillingPortal::resolveBillable(function (Request $request) {
             return $request->user()->currentTeam;
         });
     }

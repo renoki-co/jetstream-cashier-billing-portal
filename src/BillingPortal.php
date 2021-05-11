@@ -75,7 +75,7 @@ class BillingPortal
      * @param  Closure  $callback
      * @return void
      */
-    public static function setBillableOnRequest(Closure $callback)
+    public static function resolveBillable(Closure $callback)
     {
         static::$billableOnRequest = $callback;
     }
