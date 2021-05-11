@@ -86,7 +86,7 @@ class BillingPortal
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
-    public static function getBillableFromRequest(Request $request)
+    public static function resolveBillable(Request $request)
     {
         $closure = static::$billableOnRequest;
 

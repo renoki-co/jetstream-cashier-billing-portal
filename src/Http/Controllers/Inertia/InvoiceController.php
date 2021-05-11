@@ -17,7 +17,7 @@ class InvoiceController extends Controller
      */
     public function index(Request $request)
     {
-        $invoices = BillingPortal::getBillableFromRequest($request)->invoices()->map(function ($invoice) {
+        $invoices = BillingPortal::resolveBillable($request)->invoices()->map(function ($invoice) {
             return [
                 'description' => $invoice->lines->data[0]->description,
                 'created' => $invoice->created,

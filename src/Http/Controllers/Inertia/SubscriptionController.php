@@ -33,7 +33,7 @@ class SubscriptionController extends Controller
      */
     public function index(Request $request)
     {
-        $user = BillingPortal::getBillableFromRequest($request);
+        $user = BillingPortal::resolveBillable($request);
 
         $subscription = $this->getCurrentSubscription($user, $request->subscription);
 
@@ -58,7 +58,7 @@ class SubscriptionController extends Controller
      */
     public function subscribeToPlan(Request $request, string $planId)
     {
-        $user = BillingPortal::getBillableFromRequest($request);
+        $user = BillingPortal::resolveBillable($request);
 
         $plan = Saas::getPlan($planId);
 
@@ -89,23 +89,23 @@ class SubscriptionController extends Controller
     {
         $plan = Saas::getPlan($newPlanId);
 
-        $user = BillingPortal::getBillableFromRequest($request);
+        $billable = BillingPortal::resolveBillable($request);
 
-        $subscription = $this->getCurrentSubscription($user, $request->subscription);
+        $subscription = $this->getCurrentSubscription($billable, $request->subscription);
 
-        if ($plan->getPrice() > 0.00 && ! $user->defaultPaymentMethod()) {
+        if ($plan->getPrice() > 0.00 && ! $billable->defaultPaymentMethod()) {
             return $this->subscribeToPlan($request, $newPlanId);
         }
 
-        if (! $user->subscribed($subscription->name, $plan->getId())) {
+        if (! $billable->subscribed($subscription->name, $plan->getId())) {
             $hasValidSubscription = $subscription && $subscription->valid();
 
             $subscription = $hasValidSubscription
                 ? $subscription->swap($newPlanId)
-                : $user->newSubscription($request->subscription, $newPlanId)->create(optional($user->defaultPaymentMethod())->id);
+                : $billable->newSubscription($request->subscription, $newPlanId)->create(optional($billable->defaultPaymentMethod())->id);
         }
 
-        BillingPortal::syncQuotas(BillingPortal::getBillableFromRequest($request), $subscription);
+        BillingPortal::syncQuotas($billable, $subscription);
 
         return Redirect::route('billing-portal.subscription.index')
             ->with('success', "The plan got successfully changed to {$plan->getName()}!");
@@ -119,15 +119,15 @@ class SubscriptionController extends Controller
      */
     public function resumeSubscription(Request $request)
     {
-        $user = BillingPortal::getBillableFromRequest($request);
+        $billable = BillingPortal::resolveBillable($request);
 
-        $subscription = $this->getCurrentSubscription($user, $request->subscription);
+        $subscription = $this->getCurrentSubscription($billable, $request->subscription);
 
         if ($subscription->onGracePeriod()) {
             $subscription->resume();
         }
 
-        BillingPortal::syncQuotas(BillingPortal::getBillableFromRequest($request), $subscription);
+        BillingPortal::syncQuotas($billable, $subscription);
 
         return Redirect::route('billing-portal.subscription.index')
             ->with('success', 'The subscription has been resumed.');
@@ -141,7 +141,7 @@ class SubscriptionController extends Controller
      */
     public function cancelSubscription(Request $request)
     {
-        $user = BillingPortal::getBillableFromRequest($request);
+        $billable = BillingPortal::resolveBillable($request);
 
         $subscription = $this->getCurrentSubscription($user, $request->subscription);
 
@@ -149,7 +149,7 @@ class SubscriptionController extends Controller
             $subscription->cancel();
         }
 
-        BillingPortal::syncQuotas(BillingPortal::getBillableFromRequest($request), $subscription);
+        BillingPortal::syncQuotas($billable, $subscription);
 
         return Redirect::route('billing-portal.subscription.index')
             ->with('success', 'The current subscription got cancelled!');
