@@ -150,7 +150,7 @@ class CashierRegisterServiceProvider extends BaseServiceProvider
         });
 
         // Intercept the Stripe Checkout options.
-        BillingPortal::setStripeCheckoutOptions(function (Request $request, $billable, $plan, $subscription) {
+        BillingPortal::resolveStripeCheckoutOptions(function (Request $request, $billable, $plan, $subscription) {
             return [
                 'payment_method_types' => ['card'],
             ];

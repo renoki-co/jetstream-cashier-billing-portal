@@ -101,7 +101,7 @@ class BillingPortal
      * @param  \Closure  $callback
      * @return void
      */
-    public static function setStripeCheckoutOptions(Closure $callback)
+    public static function resolveStripeCheckoutOptions(Closure $callback)
     {
         static::$stripeCheckoutOptions = $callback;
     }
