@@ -145,7 +145,7 @@ class CashierRegisterServiceProvider extends BaseServiceProvider
         parent::boot();
 
         // Modify the checkout model.
-        BillingPortal::onCheckout(function ($checkout, Request $request, $billable, $plan, $subscription) {
+        BillingPortal::resolveStripeCheckout(function ($checkout, Request $request, $billable, $plan, $subscription) {
             return $checkout->allowPromotionCodes();
         });
 

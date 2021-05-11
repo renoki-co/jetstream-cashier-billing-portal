@@ -131,7 +131,7 @@ class BillingPortal
      * @param  \Closure  $callback
      * @return void
      */
-    public static function onCheckout(Closure $callback)
+    public static function resolveStripeCheckout(Closure $callback)
     {
         static::$stripeCheckoutInterceptor = $callback;
     }

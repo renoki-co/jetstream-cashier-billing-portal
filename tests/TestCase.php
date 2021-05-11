@@ -61,7 +61,7 @@ abstract class TestCase extends Orchestra
             ];
         });
 
-        BillingPortal::onCheckout(function ($checkout, Request $request, $billable, $plan, $subscription) {
+        BillingPortal::resolveStripeCheckout(function ($checkout, Request $request, $billable, $plan, $subscription) {
             return $checkout->allowPromotionCodes();
         });
     }
