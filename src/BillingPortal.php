@@ -14,7 +14,7 @@ class BillingPortal
      *
      * @var Closure|null
      */
-    protected static $syncQuotasCallback;
+    protected static $syncQuotasResolver;
 
     /**
      * The closure that will be called to retrieve
@@ -22,7 +22,7 @@ class BillingPortal
      *
      * @var null|Closure
      */
-    protected static $billableOnRequest;
+    protected static $billable;
 
     /**
      * The closure that will be called to get
@@ -38,7 +38,7 @@ class BillingPortal
      *
      * @var null|Closure
      */
-    protected static $stripeCheckoutInterceptor;
+    protected static $stripeCheckoutResolver;
 
     /**
      * Register a method that will run when the
@@ -49,7 +49,7 @@ class BillingPortal
      */
     public static function resolveQuotasSync(Closure $callback)
     {
-        static::$syncQuotasCallback = $callback;
+        static::$syncQuotasResolver = $callback;
     }
 
     /**
@@ -61,8 +61,8 @@ class BillingPortal
      */
     public static function syncQuotas(Model $user, Model $subscription)
     {
-        if (static::$syncQuotasCallback) {
-            $callback = static::$syncQuotasCallback;
+        if (static::$syncQuotasResolver) {
+            $callback = static::$syncQuotasResolver;
 
             $callback($user, $subscription);
         }
@@ -77,7 +77,7 @@ class BillingPortal
      */
     public static function resolveBillable(Closure $callback)
     {
-        static::$billableOnRequest = $callback;
+        static::$billable = $callback;
     }
 
     /**
@@ -88,7 +88,7 @@ class BillingPortal
      */
     public static function getBillable(Request $request)
     {
-        $closure = static::$billableOnRequest;
+        $closure = static::$billable;
 
         return $closure
             ? $closure($request)
@@ -133,7 +133,7 @@ class BillingPortal
      */
     public static function resolveStripeCheckout(Closure $callback)
     {
-        static::$stripeCheckoutInterceptor = $callback;
+        static::$stripeCheckoutResolver = $callback;
     }
 
     /**
@@ -149,7 +149,7 @@ class BillingPortal
      */
     public static function mutateCheckout($checkout, Request $request, $billable, Plan $plan, string $subscription)
     {
-        $closure = static::$stripeCheckoutInterceptor;
+        $closure = static::$stripeCheckoutResolver;
 
         return $closure
             ? $closure($checkout, $request, $billable, $plan, $subscription)
