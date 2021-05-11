@@ -62,7 +62,7 @@
 
                         <jet-button
                             :data-secret="intent.client_secret"
-                            @click.native="addPaymentMethod"
+                            @click="addPaymentMethod"
                         >
                             Add Payment Method
                         </jet-button>

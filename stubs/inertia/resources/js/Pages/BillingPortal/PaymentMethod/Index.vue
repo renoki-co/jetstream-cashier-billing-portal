@@ -8,7 +8,7 @@
 
         <div class="py-12">
             <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-                <jet-button @click.native="$inertia.visit(route('billing-portal.payment-method.create'))">
+                <jet-button @click="$inertia.visit(route('billing-portal.payment-method.create'))">
                     Add New Payment Method
                 </jet-button>
 
@@ -62,14 +62,14 @@
 
                                             <jet-secondary-button
                                                 v-else
-                                                @click.native="setAsDefault(method)"
+                                                @click="setAsDefault(method)"
                                             >
                                                 Set as default
                                             </jet-secondary-button>
                                         </td>
 
                                         <td class="px-6 py-4 whitespace-no-wrap text-center">
-                                            <jet-danger-button @click.native="deletePaymentMethod(method)">
+                                            <jet-danger-button @click="deletePaymentMethod(method)">
                                                 Delete
                                             </jet-danger-button>
                                         </td>

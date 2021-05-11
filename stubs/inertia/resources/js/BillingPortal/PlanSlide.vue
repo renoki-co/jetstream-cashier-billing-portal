@@ -62,28 +62,28 @@
             <template v-else>
                 <jet-button
                     v-if="!currentPlan"
-                    @click.native="subscribeToPlan(plan.id)"
+                    @click="subscribeToPlan(plan.id)"
                 >
                     Subscribe
                 </jet-button>
 
                 <jet-secondary-button
                     v-else-if="plan.id !== currentPlan.id"
-                    @click.native="swapPlan(plan.id)"
+                    @click="swapPlan(plan.id)"
                 >
                     Subscribe
                 </jet-secondary-button>
 
                 <jet-secondary-button
                     v-if="currentPlan && currentPlan.id === plan.id && recurring"
-                    @click.native="cancelSubscription"
+                    @click="cancelSubscription"
                 >
                     Cancel
                 </jet-secondary-button>
 
                 <jet-button
                     v-if="currentPlan && currentPlan.id === plan.id && cancelled && onGracePeriod"
-                    @click.native="resumeSubscription"
+                    @click="resumeSubscription"
                 >
                     Resume
                 </jet-button>

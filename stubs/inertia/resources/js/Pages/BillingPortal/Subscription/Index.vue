@@ -6,15 +6,15 @@
             </h2>
 
             <div class="mt-3 space-x-2">
-                <jet-secondary-button @click.native="$inertia.visit(route('billing-portal.invoice.index'))">
+                <jet-secondary-button @click="$inertia.visit(route('billing-portal.invoice.index'))">
                     Invoices
                 </jet-secondary-button>
 
-                <jet-secondary-button @click.native="$inertia.visit(route('billing-portal.payment-method.index'))">
+                <jet-secondary-button @click="$inertia.visit(route('billing-portal.payment-method.index'))">
                     Payment methods
                 </jet-secondary-button>
 
-                <jet-secondary-button @click.native="$inertia.visit(route('billing-portal.portal'))">
+                <jet-secondary-button @click="$inertia.visit(route('billing-portal.portal'))">
                     Stripe Billing Portal
 
                     <svg
