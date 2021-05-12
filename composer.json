@@ -13,7 +13,7 @@
     ],
     "require": {
         "laravel/jetstream": "^2.3",
-        "renoki-co/cashier-register": "^4.0"
+        "renoki-co/cashier-register": "^4.3"
     },
     "autoload": {
         "psr-4": {
