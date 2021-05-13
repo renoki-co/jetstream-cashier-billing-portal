@@ -16,9 +16,8 @@ class CreateSubscriptionUsagesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('subscription_id');
             $table->string('feature_id');
-
             $table->unsignedSmallInteger('used');
-
+            $table->unsignedSmallInteger('used_total');
             $table->timestamps();
 
             $table->unique(['subscription_id', 'feature_id']);
