@@ -8,9 +8,10 @@ use RenokiCo\BillingPortal\Http\Controllers\Inertia\SubscriptionController;
 
 Route::group([
     'prefix' => config('billing-portal.prefix'),
-    'as' => config('billing-portal.as', 'billing-portal.'),
+    'as' => 'billing-portal.',
     'middleware' => config('billing-portal.middleware'),
 ], function () {
+    Route::get('/', [BillingController::class, 'dashboard'])->name('dashboard');
     Route::get('/portal', [BillingController::class, 'portal'])->name('portal');
 
     Route::post('/subscription/subscribe/{plan}', [SubscriptionController::class, 'subscribeToPlan'])->name('subscription.plan-subscribe');

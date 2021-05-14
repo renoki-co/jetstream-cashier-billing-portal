@@ -44,7 +44,7 @@ class InstallCommand extends JetstreamInstallCommand
      */
     protected function installCashierRegisterStack()
     {
-        $this->requireComposerPackages('laravel/cashier:^12.9');
+        $this->requireComposerPackages('laravel/cashier:^12.13');
 
         $this->callSilent('vendor:publish', ['--provider' => 'RenokiCo\CashierRegister\CashierRegisterServiceProvider', '--tag' => 'config', '--force' => true]);
         $this->callSilent('vendor:publish', ['--provider' => 'RenokiCo\CashierRegister\CashierRegisterServiceProvider', '--tag' => 'migrations', '--force' => true]);
@@ -65,6 +65,8 @@ class InstallCommand extends JetstreamInstallCommand
 
         (new Filesystem)->copyDirectory(__DIR__.'/../../../stubs/inertia/resources/js/Pages/BillingPortal', resource_path('js/Pages/BillingPortal'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../../stubs/inertia/resources/js/BillingPortal', resource_path('js/BillingPortal'));
+
+        copy(__DIR__.'/../../../stubs/inertia/resources/js/Layouts/BillingPortalLayout.vue', resource_path('js/Layouts/BillingPortalLayout.vue'));
 
         $this->line('');
         $this->info('Inertia scaffolding for Cashier Billing Portal installed successfully.');

@@ -111,7 +111,7 @@ class CashierRegisterServiceProvider extends BaseServiceProvider
 }
 ```
 
-By default, the subscriptions are accessible under `/user/billing/subscription`, but you can change the `/user/billing` prefix easily in `config/billing-portal.php`.
+By default, the subscriptions are accessible under `/billing`, but you can change the `/billing` prefix easily in `config/billing-portal.php`.
 
 For more information about defining plans and quotas, check [Cashier Register documentation](https://github.com/renoki-co/cashier-register) and check [Laravel Cashier for Stripe documentation](https://laravel.com/docs/8.x/billing) on handling the billing.
 

@@ -2,6 +2,13 @@
     <app-layout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                <button
+                    @click="$inertia.visit(route('billing-portal.payment-method.index'))"
+                    class="focus:outline-none mr-1"
+                >
+                    &larr;
+                </button>
+
                 Billing: Add Payment Method
             </h2>
         </template>
@@ -97,10 +104,12 @@ export default {
         JetButton,
         JetLabel,
     },
+
     props: [
         'intent',
         'stripe_key',
     ],
+
     data() {
         return {
             stripe: null,
@@ -111,6 +120,7 @@ export default {
             cvc: null,
         };
     },
+
     mounted() {
         this.stripe = Stripe(this.stripe_key);
 
@@ -152,10 +162,8 @@ export default {
 
         this.cvc.mount('#card-cvc');
     },
+
     methods: {
-        /**
-         * Submit the payment method form.
-         */
         async addPaymentMethod() {
             const { paymentMethod, error } = await this.stripe.createPaymentMethod(
                 'card', this.number, { billing_details: { name: this.name } }
