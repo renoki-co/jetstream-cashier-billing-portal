@@ -98,7 +98,7 @@ class SubscriptionController extends Controller
         // If the desired plan has a price and the user has no payment method added to its account,
         // redirect it to the Checkout page to finish the payment info & subscribe.
         if ($newPlan->getPrice() > 0.00 && ! $billable->defaultPaymentMethod()) {
-            return $this->redirectWithSubscribeIntent($manager, $billable, $newPlan, $request);
+            return $this->redirectWithSubscribeIntent($manager, $request, $newPlan->getId());
         }
 
         // Otherwise, check if it is not already subscribed to the new plan and initiate
