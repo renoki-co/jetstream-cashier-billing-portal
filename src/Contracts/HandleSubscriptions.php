@@ -28,7 +28,7 @@ interface HandleSubscriptions
     public function resumeSubscription($subscription, $billable, Request $request);
 
     /**
-     * Define the subscription cancellation request.
+     * Define the subscriptioncancellation action.
      *
      * @param  \RenokiCo\CashierRegister\Models\Stripe\Subscription  $subscription
      * @param  \Illuminate\Database\Eloquent\Model  $billable
