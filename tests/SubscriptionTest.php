@@ -2,7 +2,6 @@
 
 namespace RenokiCo\BillingPortal\Test;
 
-use RenokiCo\BillingPortal\BillingPortal;
 use RenokiCo\BillingPortal\Test\Models\User;
 use RenokiCo\CashierRegister\Saas;
 
