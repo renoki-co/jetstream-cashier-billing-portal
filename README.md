@@ -26,6 +26,7 @@ Currently, only Inertia with Stripe are supported. For Paddle and/or Livewire, a
     - [Custom Billables](#custom-billables)
     - [Modifying the actions](#modifying-the-actions)
     - [Proration Between Swaps](#proration-between-swaps)
+    - [Further reading](#further-reading)
   - [🐛 Testing](#-testing)
   - [🤝 Contributing](#-contributing)
   - [🔒  Security](#--security)
@@ -58,7 +59,7 @@ composer require renoki-co/jetstream-cashier-billing-portal
 You shall install the Cashier Billing Portal in one command, just like Jetstream. This will install Cashier, Cashier Register and Billing Portal.
 
 ```bash
-$ php artisan billing-portal:install inertia
+$ php artisan billing-portal:install inertia stripe
 ```
 
 ### Stripe Checkout
@@ -78,24 +79,19 @@ The only thing you should do is to add the [Stripe Javascript SDK code](https://
 
 You will also have to [prepare the plans](https://github.com/renoki-co/cashier-register#preparing-the-plans) in `CashierRegisterServiceProvider`.
 
-Import the created `app/Providers/CashierRegisterServiceProvider` class into your `app.php`:
+Manual import of the `app/Providers/CashierRegisterServiceProvider` class is no longe required. The install commandd did that for you.
 
-```php
-$providers = [
-    // ...
-    \App\Providers\CashierRegisterServiceProvider::class,
-];
-```
+Below you will find plenty of examples.
 
 ## 🙌 Usage
 
-In `CashierRegisterServiceProvider`'s boot method you may define the plans you need:
+In `BillingPortalServiceProvider`'s boot method you may define the plans you need:
 
 ```php
-use RenokiCo\CashierRegister\CashierRegisterServiceProvider as BaseServiceProvider;
+use RenokiCo\CashierRegister\BillingPortalServiceProvider as BaseServiceProvider;
 use RenokiCo\CashierRegister\Saas;
 
-class CashierRegisterServiceProvider extends BaseServiceProvider
+class BillingPortalServiceProvider extends BaseServiceProvider
 {
     /**
      * Boot the service provider.
@@ -117,13 +113,13 @@ For more information about defining plans and quotas, check [Cashier Register do
 
 ### Custom Billables
 
-By default, the billing is made directly on the currently authenticated model. In some cases like using billable trait on the Team model, you may change the model that will be retrieved from the current request. You may define it in the `boot()` method of `CashierRegisterServiceProvider`:
+By default, the billing is made directly on the currently authenticated model. In some cases like using billable trait on the Team model, you may change the model that will be retrieved from the current request. You may define it in the `boot()` method of `BillingPortalServiceProvider`:
 
 ```php
 use Illuminate\Http\Request;
 use RenokiCo\BillingPortal\BillingPortal;
 
-class CashierRegisterServiceProvider extends BaseServiceProvider
+class BillingPortalServiceProvider extends BaseServiceProvider
 {
     /**
      * Boot the service provider.
@@ -145,6 +141,8 @@ class CashierRegisterServiceProvider extends BaseServiceProvider
 
 Even if the scaffolding comes with basic controller logic to handle new subscriptions or manage existing ones, you are free to change the Billing Portal's actions in `app/Actions/BillingPortal`.
 
+You just have to re-write your logic in the action classes.
+
 ### Proration Between Swaps
 
 By default, Billing Portal prorates the swap between plans. If you wish to not prorate the subscription between swaps, you can specify this in your service provider:
@@ -152,7 +150,7 @@ By default, Billing Portal prorates the swap between plans. If you wish to not p
 ```php
 use RenokiCo\BillingPortal\BillingPortal;
 
-class CashierRegisterServiceProvider extends BaseServiceProvider
+class BillingPortalServiceProvider extends BaseServiceProvider
 {
     /**
      * Boot the service provider.
@@ -167,6 +165,12 @@ class CashierRegisterServiceProvider extends BaseServiceProvider
     }
 }
 ```
+
+### Further reading
+
+Because Jetstream Cashier Billing Portal is written on top of [Cashier Register](https://github.com/renoki-co/cashier-register), a complete subscription manager for your Laravel application, you are free to follow the Cashier Register examples in the repository.
+
+You are free to leverage the power of subscriptions in your app. Billing Portal just makes it easier for your app to handle subscriptions.
 
 ## 🐛 Testing
 

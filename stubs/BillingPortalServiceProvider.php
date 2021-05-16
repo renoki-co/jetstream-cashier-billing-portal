@@ -17,6 +17,8 @@ class BillingPortalServiceProvider extends BaseProvider
     {
         parent::boot();
 
+        // BillingPortal::dontProrateOnSwap();
+
         BillingPortal::handleSubscriptionsUsing(HandleSubscriptions::class);
     }
 
@@ -27,6 +29,6 @@ class BillingPortalServiceProvider extends BaseProvider
      */
     public function register()
     {
-        //
+        parent::register();
     }
 }
