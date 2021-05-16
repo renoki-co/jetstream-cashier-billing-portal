@@ -28,6 +28,6 @@ return [
     |
     */
 
-    'prefix' => '/user/billing',
+    'prefix' => '/billing',
 
 ];

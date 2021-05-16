@@ -18,7 +18,7 @@ class InvoiceTest extends TestCase
 
         $user->newSubscription('main', static::$stripePlanId)->create('pm_card_visa');
 
-        $invoices = $user->invoices()->map(function ($invoice) {
+        $invoices = $user->invoicesIncludingPending()->map(function ($invoice) {
             return [
                 'description' => $invoice->lines->data[0]->description,
                 'created' => $invoice->created,

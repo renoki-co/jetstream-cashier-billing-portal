@@ -3,18 +3,11 @@
 namespace RenokiCo\BillingPortal;
 
 use Closure;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use RenokiCo\CashierRegister\Plan;
 
 class BillingPortal
 {
-    /**
-     * The callback to sync quotas for an user.
-     *
-     * @var Closure|null
-     */
-    protected static $syncQuotasCallback;
+    use Concerns\ResolvesActions;
 
     /**
      * The closure that will be called to retrieve
@@ -22,50 +15,33 @@ class BillingPortal
      *
      * @var null|Closure
      */
-    protected static $billableOnRequest;
+    protected static $billable;
 
     /**
-     * The closure that will be called to get
-     * the right Stripe Checkout parameters to call.
+     * Wether the proration should occur when swapping between plans.
      *
-     * @var null|Closure
+     * @var bool
      */
-    protected static $stripeCheckoutOptions;
+    protected static $proratesOnSwap = true;
 
     /**
-     * The closure that will be called to modify
-     * the Stripe Checkout flow.
+     * Don't prorate on swapping.
      *
-     * @var null|Closure
-     */
-    protected static $stripeCheckoutInterceptor;
-
-    /**
-     * Register a method that will run when the
-     * subscription updates, in order to sync the quotas.
-     *
-     * @param  \Closure  $callback
      * @return void
      */
-    public static function onSyncingQuotas(Closure $callback)
+    public static function dontProrateOnSwap()
     {
-        static::$syncQuotasCallback = $callback;
+        static::$proratesOnSwap = false;
     }
 
     /**
-     * Run the syncing quotas callback.
+     * Wether the proration should occur when swapping.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $user
-     * @param  \Illuminate\Database\Eloquent\Model  $subscription
-     * @return void
+     * @return bool
      */
-    public static function syncQuotas(Model $user, Model $subscription)
+    public static function proratesOnSwap(): bool
     {
-        if (static::$syncQuotasCallback) {
-            $callback = static::$syncQuotasCallback;
-
-            $callback($user, $subscription);
-        }
+        return static::$proratesOnSwap;
     }
 
     /**
@@ -75,9 +51,9 @@ class BillingPortal
      * @param  Closure  $callback
      * @return void
      */
-    public static function setBillableOnRequest(Closure $callback)
+    public static function resolveBillable(Closure $callback)
     {
-        static::$billableOnRequest = $callback;
+        static::$billable = $callback;
     }
 
     /**
@@ -86,73 +62,12 @@ class BillingPortal
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
-    public static function getBillableFromRequest(Request $request)
+    public static function getBillable(Request $request)
     {
-        $closure = static::$billableOnRequest;
+        $closure = static::$billable;
 
         return $closure
             ? $closure($request)
             : $request->user();
-    }
-
-    /**
-     * Set the Stripe Checkout options computator.
-     *
-     * @param  \Closure  $callback
-     * @return void
-     */
-    public static function setStripeCheckoutOptions(Closure $callback)
-    {
-        static::$stripeCheckoutOptions = $callback;
-    }
-
-    /**
-     * Calculate the options for Stripe Checkout for
-     * a specific Billable mode, plan and subscription name.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $billable
-     * @param  \RenokiCo\CashierRegister\Plan  $plan
-     * @param  string  $subscription
-     * @return array
-     */
-    public static function getOptionsForStripeCheckout(Request $request, $billable, Plan $plan, string $subscription): array
-    {
-        $closure = static::$stripeCheckoutOptions;
-
-        return $closure
-            ? $closure($request, $billable, $plan, $subscription)
-            : [];
-    }
-
-    /**
-     * Set the Stripe Checkout interceptor.
-     *
-     * @param  \Closure  $callback
-     * @return void
-     */
-    public static function onCheckout(Closure $callback)
-    {
-        static::$stripeCheckoutInterceptor = $callback;
-    }
-
-    /**
-     * Mutate the Stripe checkout for
-     * a specific Billable mode, plan and subscription name.
-     *
-     * @param  \Laravel\Cashier\SubscriptionBuilder  $checkout
-     * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $billable
-     * @param  \RenokiCo\CashierRegister\Plan  $plan
-     * @param  string  $subscription
-     * @return \Laravel\Cashier\SubscriptionBuilder
-     */
-    public static function mutateCheckout($checkout, Request $request, $billable, Plan $plan, string $subscription)
-    {
-        $closure = static::$stripeCheckoutInterceptor;
-
-        return $closure
-            ? $closure($checkout, $request, $billable, $plan, $subscription)
-            : $checkout;
     }
 }

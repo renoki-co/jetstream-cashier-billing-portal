@@ -14,7 +14,7 @@ class InstallCommand extends JetstreamInstallCommand
      */
     protected $signature = 'billing-portal:install
         {stack : The development stack that should be installed}
-        {--stripe=true : Wether to install the Stripe version.}
+        {cashier=stripe : The Cashier stack that should be installed}
         {--composer=global : Absolute path to the Composer binary which should be used to install packages}
     ';
 
@@ -35,6 +35,14 @@ class InstallCommand extends JetstreamInstallCommand
         $this->installCashierRegisterStack();
 
         $this->installInertiaStack();
+
+        $this->callSilent('vendor:publish', ['--provider' => 'RenokiCo\BillingPortal\BillingPortalServiceProvider', '--tag' => 'provider', '--force' => true]);
+
+        $this->installServiceProviderAfter('CashierRegisterServiceProvider', 'BillingPortalServiceProvider');
+
+        if ($this->argument('cashier') === 'stripe') {
+            $this->installStripeStack();
+        }
     }
 
     /**
@@ -44,11 +52,15 @@ class InstallCommand extends JetstreamInstallCommand
      */
     protected function installCashierRegisterStack()
     {
-        $this->requireComposerPackages('laravel/cashier:^12.9');
+        if ($this->argument('cashier') === 'stripe') {
+            $this->requireComposerPackages('laravel/cashier:^12.13');
+        }
 
         $this->callSilent('vendor:publish', ['--provider' => 'RenokiCo\CashierRegister\CashierRegisterServiceProvider', '--tag' => 'config', '--force' => true]);
         $this->callSilent('vendor:publish', ['--provider' => 'RenokiCo\CashierRegister\CashierRegisterServiceProvider', '--tag' => 'migrations', '--force' => true]);
         $this->callSilent('vendor:publish', ['--provider' => 'RenokiCo\CashierRegister\CashierRegisterServiceProvider', '--tag' => 'provider', '--force' => true]);
+
+        $this->installServiceProviderAfter('JetstreamServiceProvider', 'CashierRegisterServiceProvider');
     }
 
     /**
@@ -66,8 +78,22 @@ class InstallCommand extends JetstreamInstallCommand
         (new Filesystem)->copyDirectory(__DIR__.'/../../../stubs/inertia/resources/js/Pages/BillingPortal', resource_path('js/Pages/BillingPortal'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../../stubs/inertia/resources/js/BillingPortal', resource_path('js/BillingPortal'));
 
+        copy(__DIR__.'/../../../stubs/inertia/resources/js/Layouts/BillingPortalLayout.vue', resource_path('js/Layouts/BillingPortalLayout.vue'));
+
         $this->line('');
         $this->info('Inertia scaffolding for Cashier Billing Portal installed successfully.');
         $this->comment('Please execute "npm install && npm run dev" to build your assets.');
+    }
+
+    /**
+     * Install the Stripe stack into the application.
+     *
+     * @return void
+     */
+    protected function installStripeStack()
+    {
+        (new Filesystem)->ensureDirectoryExists(app_path('Actions/BillingPortal'));
+
+        (new Filesystem)->copyDirectory(__DIR__.'/../../../stubs/stripe/app/Actions/BillingPortal', app_path('Actions/BillingPortal'));
     }
 }
