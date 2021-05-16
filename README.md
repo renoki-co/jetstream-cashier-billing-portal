@@ -9,9 +9,9 @@ Jetstream Cashier Billing Portal
 [![Monthly Downloads](https://poser.pugx.org/renoki-co/jetstream-cashier-billing-portal/d/monthly)](https://packagist.org/packages/renoki-co/jetstream-cashier-billing-portal)
 [![License](https://poser.pugx.org/renoki-co/jetstream-cashier-billing-portal/license)](https://packagist.org/packages/renoki-co/jetstream-cashier-billing-portal)
 
-Jetstream Cashier Billing Portal is a simple scaffolding billing portal to manage subscriptions, invoices and payment methods, built on top of Jetstream & Cashier Register.
+Jetstream Cashier Billing Portal is a simple Spark alternative written for Laravel Jetstream. It comes with built-in stacks and design files for easy scaffolding.
 
-Currently, only Inertia with Stripe are supported. For Paddle and/or Livewire, any PR is welcomed!
+**Currently, only Inertia with Stripe are supported. For Livewire, any PR is welcomed!**
 
 ![example](example.png)
 
