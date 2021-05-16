@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use RenokiCo\BillingPortal\BillingPortal;
+use RenokiCo\BillingPortal\Contracts\HandleSubscriptions;
 use RenokiCo\CashierRegister\Saas;
 
 class SubscriptionController extends Controller
@@ -50,30 +51,24 @@ class SubscriptionController extends Controller
     }
 
     /**
-     * Subscribe to the plan.
+     * Redirect the user to subscribe to the plan.
      *
+     * @param  \RenokiCo\BillingPortal\Contracts\HandleSubscriptions  $manager
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $planId
      * @return \Illuminate\Http\Response
      */
-    public function subscribeToPlan(Request $request, string $planId)
+    public function redirectWithSubscribeIntent(HandleSubscriptions $manager, Request $request, string $planId)
     {
         $billable = BillingPortal::getBillable($request);
 
         $plan = Saas::getPlan($planId);
 
-        $checkoutOptions = array_merge([
-            'success_url' => route('billing-portal.subscription.index', ['success' => "You have successfully subscribed to {$plan->getName()}!"]),
-            'cancel_url' => route('billing-portal.subscription.index', ['error' => "The subscription to {$plan->getName()} was cancelled!"]),
-        ], BillingPortal::getStripeCheckoutOptions($request, $billable, $plan, $request->subscription));
+        $subscription = $billable->newSubscription($request->subscription, $plan->getId());
 
-        $checkout = BillingPortal::mutateCheckout(
-            $billable->newSubscription($request->subscription, $planId),
-            $request,
-            $billable,
-            $plan,
-            $request->subscription
-        )->checkout($checkoutOptions);
+        $checkout = $manager->checkoutOnSubscription(
+            $subscription, $billable, $plan, $request
+        );
 
         return view('jetstream-cashier-billing-portal::checkout', [
             'checkout' => $checkout,
@@ -84,14 +79,14 @@ class SubscriptionController extends Controller
     /**
      * Swap the plan to a new one.
      *
+     * @param  \RenokiCo\BillingPortal\Contracts\HandleSubscriptions  $manager
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $newPlanId
      * @return \Illuminate\Http\Response
      */
-    public function swapPlan(Request $request, string $newPlanId)
+    public function swapPlan(HandleSubscriptions $manager, Request $request, string $newPlanId)
     {
-        $plan = Saas::getPlan($newPlanId);
-
+        $newPlan = Saas::getPlan($newPlanId);
         $billable = BillingPortal::getBillable($request);
 
         if (! $subscription = $this->getCurrentSubscription($billable, $request->subscription)) {
@@ -100,38 +95,44 @@ class SubscriptionController extends Controller
                 ->with('flash.bannerStyle', 'danger');
         }
 
-        if ($plan->getPrice() > 0.00 && ! $billable->defaultPaymentMethod()) {
-            return $this->subscribeToPlan($request, $newPlanId);
+        // If the desired plan has a price and the user has no payment method added to its account,
+        // redirect it to the Checkout page to finish the payment info & subscribe.
+        if ($newPlan->getPrice() > 0.00 && ! $billable->defaultPaymentMethod()) {
+            return $this->redirectWithSubscribeIntent($manager, $billable, $newPlan, $request);
         }
 
-        if (! $billable->subscribed($subscription->name, $plan->getId())) {
+        // Otherwise, check if it is not already subscribed to the new plan and initiate
+        // a plan swapping. It also takes proration into account.
+        if (! $billable->subscribed($subscription->name, $newPlan->getId())) {
             $hasValidSubscription = $subscription && $subscription->valid();
 
-            $subscription = value(function () use ($hasValidSubscription, $subscription, $newPlanId, $request, $billable) {
+            $subscription = value(function () use ($hasValidSubscription, $subscription, $newPlan, $request, $billable) {
                 if ($hasValidSubscription) {
                     return BillingPortal::proratesOnSwap()
-                        ? $subscription->swap($newPlanId)
-                        : $subscription->noProrate()->swap($newPlanId);
+                        ? $subscription->swap($newPlan->getId())
+                        : $subscription->noProrate()->swap($newPlan->getId());
                 }
 
-                return $billable->newSubscription($request->subscription, $newPlanId)
-                    ->create(optional($billable->defaultPaymentMethod())->id);
+                // However, this is the only place where a ->create() method is involved. At this point, the user has
+                // a default payment method set and we will initialize the subscription in case it is not subscribed
+                // to a plan with the given subscription name.
+                return $billable->newSubscription($request->subscription, $newPlan->getId())
+                    ->create($billable->defaultPaymentMethod()->id);
             });
         }
 
-        BillingPortal::syncQuotas($billable, $subscription);
-
         return Redirect::route('billing-portal.subscription.index')
-            ->with('flash.banner', "The plan got successfully changed to {$plan->getName()}!");
+            ->with('flash.banner', "The plan got successfully changed to {$newPlan->getName()}!");
     }
 
     /**
      * Resume the current cancelled subscription.
      *
+     * @param  \RenokiCo\BillingPortal\Contracts\HandleSubscriptions  $manager
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function resumeSubscription(Request $request)
+    public function resumeSubscription(HandleSubscriptions $manager, Request $request)
     {
         $billable = BillingPortal::getBillable($request);
 
@@ -141,11 +142,7 @@ class SubscriptionController extends Controller
                 ->with('flash.bannerStyle', 'danger');
         }
 
-        if ($subscription->onGracePeriod()) {
-            $subscription->resume();
-        }
-
-        BillingPortal::syncQuotas($billable, $subscription);
+        $manager->resumeSubscription($subscription, $billable, $request);
 
         return Redirect::route('billing-portal.subscription.index')
             ->with('flash.banner', 'The subscription has been resumed.');
@@ -154,10 +151,11 @@ class SubscriptionController extends Controller
     /**
      * Cancel the current active subscription.
      *
+     * @param  \RenokiCo\BillingPortal\Contracts\HandleSubscriptions  $manager
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function cancelSubscription(Request $request)
+    public function cancelSubscription(HandleSubscriptions $manager, Request $request)
     {
         $billable = BillingPortal::getBillable($request);
 
@@ -167,11 +165,7 @@ class SubscriptionController extends Controller
                 ->with('flash.bannerStyle', 'danger');
         }
 
-        if ($subscription->recurring()) {
-            $subscription->cancel();
-        }
-
-        BillingPortal::syncQuotas($billable, $subscription);
+        $manager->cancelSubscription($subscription, $billable, $request);
 
         return Redirect::route('billing-portal.subscription.index')
             ->with('flash.banner', 'The current subscription got cancelled!');
@@ -184,7 +178,7 @@ class SubscriptionController extends Controller
      * @param  string  $subscription
      * @return \Laravel\Cashier\Subscription|null
      */
-    protected function getCurrentSubscription(Model $billable, string $subscription)
+    protected function getCurrentSubscription($billable, string $subscription)
     {
         return $billable->subscription($subscription);
     }

@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 
 class BillingPortal
 {
-    use Traits\ResolvesQuotas;
-    use Traits\ResolvesStripeCheckout;
+    use Concerns\ResolvesActions;
 
     /**
      * The closure that will be called to retrieve

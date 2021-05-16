@@ -2,8 +2,9 @@
 
 namespace RenokiCo\BillingPortal\Test;
 
-use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
+use Illuminate\Support\ServiceProvider;
+use RenokiCo\BillingPortal\BillingPortal;
 
 class TestServiceProvider extends ServiceProvider
 {
@@ -17,6 +18,8 @@ class TestServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/resources/views', 'test');
 
         Inertia::setRootView('test::app');
+
+        BillingPortal::handleSubscriptionsUsing(Actions\HandleSubscriptions::class);
     }
 
     /**

@@ -24,7 +24,7 @@ Currently, only Inertia with Stripe are supported. For Paddle and/or Livewire, a
     - [Defining Plans](#defining-plans)
   - [🙌 Usage](#-usage)
     - [Custom Billables](#custom-billables)
-    - [Modifying Checkout](#modifying-checkout)
+    - [Modifying the actions](#modifying-the-actions)
     - [Proration Between Swaps](#proration-between-swaps)
   - [🐛 Testing](#-testing)
   - [🤝 Contributing](#-contributing)
@@ -141,39 +141,9 @@ class CashierRegisterServiceProvider extends BaseServiceProvider
 }
 ```
 
-### Modifying Checkout
+### Modifying the actions
 
-You can intercept Checkout options on the fly:
-
-```php
-use Illuminate\Http\Request;
-use RenokiCo\BillingPortal\BillingPortal;
-
-class CashierRegisterServiceProvider extends BaseServiceProvider
-{
-    /**
-     * Boot the service provider.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        parent::boot();
-
-        // Modify the checkout model.
-        BillingPortal::resolveStripeCheckout(function ($checkout, Request $request, $billable, $plan, $subscription) {
-            return $checkout->allowPromotionCodes();
-        });
-
-        // Intercept the Stripe Checkout options.
-        BillingPortal::resolveStripeCheckoutOptions(function (Request $request, $billable, $plan, $subscription) {
-            return [
-                'payment_method_types' => ['card'],
-            ];
-        });
-    }
-}
-```
+Even if the scaffolding comes with basic controller logic to handle new subscriptions or manage existing ones, you are free to change the Billing Portal's actions in `app/Actions/BillingPortal`.
 
 ### Proration Between Swaps
 

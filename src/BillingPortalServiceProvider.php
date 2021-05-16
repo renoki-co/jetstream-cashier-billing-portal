@@ -13,9 +13,19 @@ class BillingPortalServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__.'/../config/billing-portal.php' => config_path('billing-portal.php'),
-        ], 'config');
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../config/billing-portal.php' => config_path('billing-portal.php'),
+            ], 'config');
+
+            $this->publishes([
+                __DIR__.'/../stubs/BillingPortalServiceProvider.php' => app_path('Providers/BillingPortalServiceProvider.php'),
+            ], 'provider');
+
+            $this->commands([
+                Console\Commands\InstallCommand::class,
+            ]);
+        }
 
         $this->mergeConfigFrom(
             __DIR__.'/../config/billing-portal.php', 'billing-portal'
@@ -24,12 +34,6 @@ class BillingPortalServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/../routes/'.config('jetstream.stack').'.php');
 
         $this->loadViewsFrom(__DIR__.'/../resources/views/', 'jetstream-cashier-billing-portal');
-
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                Console\Commands\InstallCommand::class,
-            ]);
-        }
     }
 
     /**

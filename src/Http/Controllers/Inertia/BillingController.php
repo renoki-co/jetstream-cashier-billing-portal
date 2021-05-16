@@ -40,7 +40,7 @@ class BillingController extends Controller
      * @param  \Illuminate\Database\Eloquent\Model  $billable
      * @return Illuminate\Routing\Redirector|\Illuminate\Http\Response
      */
-    protected function getBillingPortalRedirect(Model $billable)
+    protected function getBillingPortalRedirect($billable)
     {
         $billable->createOrGetStripeCustomer();
 

@@ -35,6 +35,10 @@ class InstallCommand extends JetstreamInstallCommand
         $this->installCashierRegisterStack();
 
         $this->installInertiaStack();
+
+        copy(__DIR__.'/../../../stubs/BillingPortalServiceProvider.php', app_path('Providers/BillingPortalServiceProvider.php'));
+
+        $this->installServiceProviderAfter('CashierServiceProvider', 'BillingPortalServiceProvider');
     }
 
     /**
@@ -49,6 +53,8 @@ class InstallCommand extends JetstreamInstallCommand
         $this->callSilent('vendor:publish', ['--provider' => 'RenokiCo\CashierRegister\CashierRegisterServiceProvider', '--tag' => 'config', '--force' => true]);
         $this->callSilent('vendor:publish', ['--provider' => 'RenokiCo\CashierRegister\CashierRegisterServiceProvider', '--tag' => 'migrations', '--force' => true]);
         $this->callSilent('vendor:publish', ['--provider' => 'RenokiCo\CashierRegister\CashierRegisterServiceProvider', '--tag' => 'provider', '--force' => true]);
+
+        $this->installServiceProviderAfter('JetstreamServiceProvider', 'CashierServiceProvider');
     }
 
     /**

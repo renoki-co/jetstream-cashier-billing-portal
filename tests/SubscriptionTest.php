@@ -112,29 +112,4 @@ class SubscriptionTest extends TestCase
 
         $this->assertFalse($user->subscription('main')->cancelled());
     }
-
-    public function test_syncing_quotas()
-    {
-        $user = factory(User::class)->create();
-
-        $user->subscriptions()->delete();
-
-        $synced = false;
-
-        BillingPortal::resolveQuotasSync(function ($user, $subscription) use (&$synced) {
-            $this->assertTrue($subscription->user->is($user));
-
-            $synced = true;
-        });
-
-        $this->actingAs($user)
-            ->post(route('billing-portal.subscription.plan-subscribe', ['plan' => static::$stripeFreePlanId]))
-            ->assertOk();
-
-        $subscription = $user->newSubscription('main', static::$stripeFreePlanId)->create('pm_card_us');
-
-        BillingPortal::syncQuotas($user, $subscription);
-
-        $this->assertTrue($synced);
-    }
 }

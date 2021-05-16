@@ -54,16 +54,6 @@ abstract class TestCase extends Orchestra
         BillingPortal::resolveBillable(function (Request $request) {
             return $request->user();
         });
-
-        BillingPortal::resolveStripeCheckoutOptions(function (Request $request, $billable, $plan, $subscription) {
-            return [
-                'payment_method_types' => ['card'],
-            ];
-        });
-
-        BillingPortal::resolveStripeCheckout(function ($checkout, Request $request, $billable, $plan, $subscription) {
-            return $checkout->allowPromotionCodes();
-        });
     }
 
     /**
