@@ -2,8 +2,8 @@
 
 namespace RenokiCo\BillingPortal\Test;
 
-use Inertia\Inertia;
 use Illuminate\Support\ServiceProvider;
+use Inertia\Inertia;
 use RenokiCo\BillingPortal\BillingPortal;
 
 class TestServiceProvider extends ServiceProvider
