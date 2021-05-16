@@ -79,7 +79,7 @@ The only thing you should do is to add the [Stripe Javascript SDK code](https://
 
 You will also have to [prepare the plans](https://github.com/renoki-co/cashier-register#preparing-the-plans) in `CashierRegisterServiceProvider`.
 
-Manual import of the `app/Providers/CashierRegisterServiceProvider` class is no longe required. The install commandd did that for you.
+Manual import of the `app/Providers/CashierRegisterServiceProvider` class is no longer required. The install command already does this out-of-the-box for you.
 
 Below you will find plenty of examples.
 
