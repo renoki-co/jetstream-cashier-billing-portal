@@ -105,18 +105,20 @@ class SubscriptionController extends Controller
         if (! $billable->subscribed($subscription->name, $newPlan->getId())) {
             $hasValidSubscription = $subscription && $subscription->valid();
 
-            $subscription = value(function () use ($hasValidSubscription, $subscription, $newPlan, $request, $billable) {
+            $subscription = value(function () use ($hasValidSubscription, $subscription, $newPlan, $request, $billable, $manager) {
                 if ($hasValidSubscription) {
-                    return BillingPortal::proratesOnSwap()
-                        ? $subscription->swap($newPlan->getId())
-                        : $subscription->noProrate()->swap($newPlan->getId());
+                    return $manager->swapToPlan($subscription, $billable, $newPlan, $request);
                 }
 
                 // However, this is the only place where a ->create() method is involved. At this point, the user has
                 // a default payment method set and we will initialize the subscription in case it is not subscribed
                 // to a plan with the given subscription name.
-                return $billable->newSubscription($request->subscription, $newPlan->getId())
-                    ->create($billable->defaultPaymentMethod()->id);
+                return $manager->subscribeToPlan(
+                    $billable->newSubscription($request->subscription, $newPlan->getId()),
+                    $billable,
+                    $newPlan,
+                    $request
+                );
             });
         }
 
