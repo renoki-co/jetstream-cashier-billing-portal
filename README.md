@@ -9,7 +9,7 @@ Jetstream Cashier Billing Portal
 [![Monthly Downloads](https://poser.pugx.org/renoki-co/jetstream-cashier-billing-portal/d/monthly)](https://packagist.org/packages/renoki-co/jetstream-cashier-billing-portal)
 [![License](https://poser.pugx.org/renoki-co/jetstream-cashier-billing-portal/license)](https://packagist.org/packages/renoki-co/jetstream-cashier-billing-portal)
 
-Jetstream Cashier Billing Portal is a simple Spark alternative written for Laravel Jetstream. It comes with built-in stacks and design files for easy scaffolding.
+Jetstream Cashier Billing Portal is a simple Spark alternative written for Laravel Jetstream, with the super-power of tracking plan quotas, like seats or projects number on a per-plan basis. It comes with built-in stacks and design files for easy scaffolding.
 
 **Currently, only Inertia with Stripe are supported. For Livewire, any PR is welcomed!**
 
@@ -63,10 +63,6 @@ $ php artisan billing-portal:install inertia stripe
 
 ### Stripe Checkout
 
-Starting with [Laravel Cashier v12.7.0](https://github.com/laravel/cashier-stripe/releases/tag/v12.7.0), you can now use Stripe Checkout for easier implementation. Jetstream Cashier Billing Portal supports this and will send the user directly to the Checkout portal for new subscriptions.
-
-Starting with package version 2.x, you will also need to set up [Stripe Webhooks](https://laravel.com/docs/master/billing#handling-stripe-webhooks) in your own project to benefit from Stripe Checkout, that is used by default. If not, check the `1.x` branch or `1.x` releases that do not use Stripe Checkout.
-
 The only thing you should do is to add the [Stripe Javascript SDK code](https://stripe.com/docs/js/including) **before** the `app.js` import in your `app.blade.php` file:
 
 ```html
@@ -76,9 +72,9 @@ The only thing you should do is to add the [Stripe Javascript SDK code](https://
 
 ## 🙌 Usage
 
-Because Jetstream Cashier Billing Portal is written on top of [Cashier Register](https://github.com/renoki-co/cashier-register), a complete plan and usage quota manager for your Laravel application, you are free to follow the [Cashier Register examples](https://github.com/renoki-co/cashier-register) and leverage the true power of billing.
+Jetstream Cashier Billing Portal is written on top of [Cashier Register](https://github.com/renoki-co/cashier-register), a complete plan and usage quota manager for your Laravel application, you are free to follow the [Cashier Register examples](https://github.com/renoki-co/cashier-register) and leverage the true power of billing.
 
-In `CashierRegisterServiceProvider`'s boot method you may define the plans you need.
+In `CashierRegisterServiceProvider`'s boot method you may define the plans you need, with their features and a quota (a limit of use) for each feature.
 
 Jetstream Cashier Billing Portal will take note of it and will display the plans for your users to subscribe to.
 
@@ -101,6 +97,7 @@ class CashierRegisterServiceProvider extends BaseServiceProvider
             ->monthly(30)
             ->features([
                 Saas::feature('Seats', 'seats', 5)->notResettable(),
+                Saas::feature('Projects', 'projects')->unlimited()->notResettable(),
             ]);
     }
 }
