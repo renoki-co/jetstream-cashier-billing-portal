@@ -22,7 +22,7 @@ Jetstream Cashier Billing Portal is a simple Spark alternative written for Larav
     - [Cashier](#cashier)
     - [Scaffolding](#scaffolding)
     - [Stripe Checkout](#stripe-checkout)
-    - [Defining Plans](#defining-plans)
+    - [Defining Plans and Plan Features](#defining-plans-and-plan-features)
   - [🙌 Usage](#-usage)
     - [Custom Billables](#custom-billables)
     - [Modifying the actions](#modifying-the-actions)
@@ -46,7 +46,7 @@ This package assumes you have installed Jetstream in your project. If not, head 
 
 ### Cashier
 
-Make sure to have installed Cashier as explained in the [Cashier documentation](https://laravel.com/docs/8.x/billing), including the billable traits and tables, because Jetstream Cashier Billing Portal **WILL NOT** install them for you.
+Make sure to have prepared your models to use Cashier as explained in the [Cashier documentation](https://laravel.com/docs/8.x/billing), including the billable traits and tables. Jetstream Cashier Billing Portal **WILL NOT** install them for you.
 
 ### Scaffolding
 
@@ -75,23 +75,21 @@ The only thing you should do is to add the [Stripe Javascript SDK code](https://
 <script src="{{ mix('js/app.js') }}" defer></script>
 ```
 
-### Defining Plans
+### Defining Plans and Plan Features
 
-You will also have to [prepare the plans](https://github.com/renoki-co/cashier-register#preparing-the-plans) in `CashierRegisterServiceProvider`.
+Because Jetstream Cashier Billing Portal is written on top of [Cashier Register](https://github.com/renoki-co/cashier-register), a complete plan and usage quota manager for your Laravel application, you are free to follow the [Cashier Register examples](https://github.com/renoki-co/cashier-register) and leverage the true power of billing.
 
-Manual import of the `app/Providers/CashierRegisterServiceProvider` class is no longer required. The install command already does this out-of-the-box for you.
-
-Below you will find plenty of examples.
+Manual import of the `app/Providers/CashierRegisterServiceProvider` class is no longer required starting with package version 4.x. The install command already does this out-of-the-box for you.
 
 ## 🙌 Usage
 
-In `BillingPortalServiceProvider`'s boot method you may define the plans you need:
+In `CashierRegisterServiceProvider`'s boot method you may define the plans you need:
 
 ```php
-use RenokiCo\CashierRegister\BillingPortalServiceProvider as BaseServiceProvider;
+use RenokiCo\CashierRegister\CashierRegisterServiceProvider as BaseServiceProvider;
 use RenokiCo\CashierRegister\Saas;
 
-class BillingPortalServiceProvider extends BaseServiceProvider
+class CashierRegisterServiceProvider extends BaseServiceProvider
 {
     /**
      * Boot the service provider.
@@ -110,10 +108,6 @@ class BillingPortalServiceProvider extends BaseServiceProvider
     }
 }
 ```
-
-Because Jetstream Cashier Billing Portal is written on top of [Cashier Register](https://github.com/renoki-co/cashier-register), a complete subscription manager for your Laravel application, you are free to follow the Cashier Register examples in the repository.
-
-You are free to leverage the power of subscriptions in your app. Billing Portal just makes it easier for your app to handle subscriptions.
 
 ### Routes
 
