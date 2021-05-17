@@ -15,22 +15,6 @@ Jetstream Cashier Billing Portal is a simple Spark alternative written for Larav
 
 ![example](example.png)
 
-- [Jetstream Cashier Billing Portal](#jetstream-cashier-billing-portal)
-  - [🤝 Supporting](#-supporting)
-  - [🚀 Installation](#-installation)
-    - [Routes](#routes)
-    - [Cashier](#cashier)
-    - [Scaffolding](#scaffolding)
-    - [Stripe Checkout](#stripe-checkout)
-  - [🙌 Usage](#-usage)
-    - [Custom Billables](#custom-billables)
-    - [Modifying the actions](#modifying-the-actions)
-    - [Proration Between Swaps](#proration-between-swaps)
-  - [🐛 Testing](#-testing)
-  - [🤝 Contributing](#-contributing)
-  - [🔒  Security](#--security)
-  - [🎉 Credits](#-credits)
-
 ## 🤝 Supporting
 
 Renoki Co. on GitHub aims on bringing a lot of open source projects and helpful projects to the world. Developing and maintaining projects everyday is a harsh work and tho, we love it.
