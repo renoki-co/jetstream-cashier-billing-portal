@@ -3,6 +3,7 @@
 namespace RenokiCo\BillingPortal\Test\Actions;
 
 use Illuminate\Http\Request;
+use RenokiCo\BillingPortal\BillingPortal;
 use RenokiCo\BillingPortal\Contracts\HandleSubscriptions as HandleSubscriptionsContract;
 use RenokiCo\CashierRegister\Plan;
 
@@ -22,6 +23,38 @@ class HandleSubscriptions implements HandleSubscriptionsContract
             'success_url' => route('billing-portal.subscription.index', ['success' => "You have successfully subscribed to {$plan->getName()}!"]),
             'cancel_url' => route('billing-portal.subscription.index', ['error' => "The subscription to {$plan->getName()} was cancelled!"]),
         ]);
+    }
+
+    /**
+     * Subscribe the user to a given plan.
+     *
+     * @param  \RenokiCo\CashierRegister\Models\Stripe\Subscription  $subscription
+     * @param  \Illuminate\Database\Eloquent\Model  $billable
+     * @param  \RenokiCo\CashierRegister\Plan  $plan
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
+    public function subscribeToPlan($subscription, $billable, Plan $plan, Request $request)
+    {
+        return $subscription->create($billable->defaultPaymentMethod()->id);
+    }
+
+    /**
+     * Swap the current subscription plan.
+     *
+     * @param  \RenokiCo\CashierRegister\Models\Stripe\Subscription  $subscription
+     * @param  \Illuminate\Database\Eloquent\Model  $billable
+     * @param  \RenokiCo\CashierRegister\Plan  $plan
+     * @param  \Illuminate\Http\Request  $request
+     * @return \RenokiCo\CashierRegister\Models\Stripe\Subscription
+     */
+    public function swapToPlan($subscription, $billable, Plan $plan, Request $request)
+    {
+        if (BillingPortal::proratesOnSwap()) {
+            return $subscription->swap($plan->getId());
+        }
+
+        return $subscription->noProrate()->swap($plan->getId());
     }
 
     /**
