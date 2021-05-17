@@ -114,10 +114,7 @@ class SubscriptionController extends Controller
                 // a default payment method set and we will initialize the subscription in case it is not subscribed
                 // to a plan with the given subscription name.
                 return $manager->subscribeToPlan(
-                    $billable->newSubscription($request->subscription, $newPlan->getId()),
-                    $billable,
-                    $newPlan,
-                    $request
+                    $billable, $newPlan, $request
                 );
             });
         }

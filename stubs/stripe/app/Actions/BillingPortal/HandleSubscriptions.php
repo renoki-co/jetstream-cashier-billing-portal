@@ -28,15 +28,16 @@ class HandleSubscriptions implements HandleSubscriptionsContract
     /**
      * Subscribe the user to a given plan.
      *
-     * @param  \RenokiCo\CashierRegister\Models\Stripe\Subscription  $subscription
      * @param  \Illuminate\Database\Eloquent\Model  $billable
      * @param  \RenokiCo\CashierRegister\Plan  $plan
      * @param  \Illuminate\Http\Request  $request
      * @return \RenokiCo\CashierRegister\Models\Stripe\Subscription
      */
-    public function subscribeToPlan($subscription, $billable, Plan $plan, Request $request)
+    public function subscribeToPlan($billable, Plan $plan, Request $request)
     {
-        return $subscription->create($billable->defaultPaymentMethod()->id);
+        return $billable
+            ->newSubscription($request->subscription, $plan->getId())
+            ->create($billable->defaultPaymentMethod()->id);
     }
 
     /**
