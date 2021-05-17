@@ -18,6 +18,7 @@ Jetstream Cashier Billing Portal is a simple Spark alternative written for Larav
 - [Jetstream Cashier Billing Portal](#jetstream-cashier-billing-portal)
   - [🤝 Supporting](#-supporting)
   - [🚀 Installation](#-installation)
+    - [Routes](#routes)
     - [Cashier](#cashier)
     - [Scaffolding](#scaffolding)
     - [Stripe Checkout](#stripe-checkout)
@@ -26,7 +27,6 @@ Jetstream Cashier Billing Portal is a simple Spark alternative written for Larav
     - [Custom Billables](#custom-billables)
     - [Modifying the actions](#modifying-the-actions)
     - [Proration Between Swaps](#proration-between-swaps)
-    - [Further reading](#further-reading)
   - [🐛 Testing](#-testing)
   - [🤝 Contributing](#-contributing)
   - [🔒  Security](#--security)
@@ -102,10 +102,20 @@ class BillingPortalServiceProvider extends BaseServiceProvider
     {
         parent::boot();
 
-        // Define plans here.
+        Saas::plan('Gold Plan', 'price_...')
+            ->monthly(30)
+            ->features([
+                Saas::feature('Seats', 'seats', 5)->notResettable(),
+            ]);
     }
 }
 ```
+
+Because Jetstream Cashier Billing Portal is written on top of [Cashier Register](https://github.com/renoki-co/cashier-register), a complete subscription manager for your Laravel application, you are free to follow the Cashier Register examples in the repository.
+
+You are free to leverage the power of subscriptions in your app. Billing Portal just makes it easier for your app to handle subscriptions.
+
+### Routes
 
 By default, the subscriptions are accessible under `/billing`, but you can change the `/billing` prefix easily in `config/billing-portal.php`.
 
@@ -165,12 +175,6 @@ class BillingPortalServiceProvider extends BaseServiceProvider
     }
 }
 ```
-
-### Further reading
-
-Because Jetstream Cashier Billing Portal is written on top of [Cashier Register](https://github.com/renoki-co/cashier-register), a complete subscription manager for your Laravel application, you are free to follow the Cashier Register examples in the repository.
-
-You are free to leverage the power of subscriptions in your app. Billing Portal just makes it easier for your app to handle subscriptions.
 
 ## 🐛 Testing
 
