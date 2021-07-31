@@ -59,6 +59,10 @@ abstract class TestCase extends Orchestra
         if (class_exists(StripeCashier::class)) {
             StripeCashier::useCustomerModel(Models\User::class);
         }
+
+        BillingPortal::resolveAuthorization(function ($billable, Request $request) {
+            return true;
+        });
     }
 
     /**
