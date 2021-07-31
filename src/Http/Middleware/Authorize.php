@@ -21,7 +21,7 @@ class Authorize
 
         if ($authorization instanceof RedirectResponse) {
             return $authorization;
-        } else if ($authorization) {
+        } elseif ($authorization) {
             return $next($request);
         }
 
