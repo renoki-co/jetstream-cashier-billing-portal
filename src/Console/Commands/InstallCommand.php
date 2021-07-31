@@ -53,7 +53,7 @@ class InstallCommand extends JetstreamInstallCommand
     protected function installCashierRegisterStack()
     {
         if ($this->argument('cashier') === 'stripe') {
-            $this->requireComposerPackages('laravel/cashier:^12.13');
+            $this->requireComposerPackages('laravel/cashier:^13.4');
         }
 
         $this->callSilent('vendor:publish', ['--provider' => 'RenokiCo\CashierRegister\CashierRegisterServiceProvider', '--tag' => 'config', '--force' => true]);

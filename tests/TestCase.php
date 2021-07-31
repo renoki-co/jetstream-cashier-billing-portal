@@ -4,6 +4,7 @@ namespace RenokiCo\BillingPortal\Test;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Laravel\Cashier\Cashier as StripeCashier;
 use Orchestra\Testbench\TestCase as Orchestra;
 use RenokiCo\BillingPortal\BillingPortal;
 use RenokiCo\CashierRegister\Saas;
@@ -54,6 +55,10 @@ abstract class TestCase extends Orchestra
         BillingPortal::resolveBillable(function (Request $request) {
             return $request->user();
         });
+
+        if (class_exists(StripeCashier::class)) {
+            StripeCashier::useCustomerModel(Models\User::class);
+        }
     }
 
     /**
