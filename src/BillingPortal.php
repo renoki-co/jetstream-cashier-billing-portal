@@ -5,6 +5,7 @@ namespace RenokiCo\BillingPortal;
 class BillingPortal
 {
     use Concerns\ResolvesActions;
+    use Concerns\ResolvesAuthorization;
     use Concerns\ResolvesBillable;
 
     /**
