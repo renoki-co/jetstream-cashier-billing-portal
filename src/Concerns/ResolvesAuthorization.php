@@ -43,7 +43,7 @@ trait ResolvesAuthorization
         $closure = static::$authorizationCallback;
 
         return $closure
-            ? $closure($request)
+            ? $closure($billable, $request)
             : $billable && $billable->id == $request->user()->id;
     }
 }
