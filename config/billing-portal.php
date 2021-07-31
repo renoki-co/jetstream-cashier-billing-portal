@@ -47,7 +47,6 @@ return [
             //
         ],
 
-
         'stripe' => [
 
             'path' => '/stripe/webhook',
