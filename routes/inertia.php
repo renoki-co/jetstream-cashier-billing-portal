@@ -1,10 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Laravel\Cashier\Cashier as StripeCashier;
 use RenokiCo\BillingPortal\Http\Controllers\Inertia\BillingController;
 use RenokiCo\BillingPortal\Http\Controllers\Inertia\InvoiceController;
 use RenokiCo\BillingPortal\Http\Controllers\Inertia\PaymentMethodController;
 use RenokiCo\BillingPortal\Http\Controllers\Inertia\SubscriptionController;
+use RenokiCo\BillingPortal\Http\Controllers\StripeWebhook;
 
 Route::group([
     'prefix' => config('billing-portal.prefix'),
@@ -24,4 +26,14 @@ Route::group([
     Route::resource('invoice', InvoiceController::class)->only('index');
     Route::resource('payment-method', PaymentMethodController::class)->except('update', 'edit');
     Route::resource('subscription', SubscriptionController::class)->only('index');
+
+    if (class_exists(StripeCashier::class)) {
+        Route::post(
+            config('billing-portal.webhooks.stripe.path', '/stripe/webhook'),
+            [
+                config('billing-portal.webhooks.stripe.class', StripeWebhook::class),
+                'handleWebhook',
+            ]
+        )->name('stripe.webhook');
+    }
 });
