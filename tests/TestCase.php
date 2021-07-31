@@ -154,7 +154,10 @@ abstract class TestCase extends Orchestra
             'prefix'   => '',
         ]);
 
-        $app['config']->set('billing-portal.middleware', ['web']);
+        $app['config']->set('billing-portal.middleware', [
+            'web',
+            \RenokiCo\BillingPortal\Http\Middleware\Authorize::class,
+        ]);
 
         $app['config']->set('jetstream.stack', 'inertia');
     }
