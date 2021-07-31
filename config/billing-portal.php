@@ -17,6 +17,7 @@ return [
         'web',
         'auth:sanctum',
         'verified',
+        \RenokiCo\BillingPortal\Http\Middleware\Authorize::class,
     ],
 
     /*
