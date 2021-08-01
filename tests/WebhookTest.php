@@ -3,14 +3,17 @@
 namespace RenokiCo\BillingPortal\Test;
 
 use RenokiCo\BillingPortal\Test\Models\User;
+use RenokiCo\CashierREgister\Saas;
 
 class WebhookTest extends TestCase
 {
-    public function text_webhook_for_invoice_payment_succeeded()
+    public function test_webhook_for_invoice_payment_succeeded()
     {
         $user = factory(User::class)->create();
 
-        $subscription = $user->subscription('main');
+        $plan = Saas::getPlan(static::$stripeFreePlanId);
+
+        $subscription = $this->createStripeSubscription($user, $plan);
 
         $this->postJson(route('billing-portal.stripe.webhook'), [
             'id' => 'foo',
