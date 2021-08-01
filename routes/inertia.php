@@ -26,14 +26,4 @@ Route::group([
     Route::resource('invoice', InvoiceController::class)->only('index');
     Route::resource('payment-method', PaymentMethodController::class)->except('update', 'edit');
     Route::resource('subscription', SubscriptionController::class)->only('index');
-
-    if (class_exists(StripeCashier::class)) {
-        Route::post(
-            config('billing-portal.webhooks.stripe.path', '/stripe/webhook'),
-            [
-                config('billing-portal.webhooks.stripe.class', StripeWebhook::class),
-                'handleWebhook',
-            ]
-        )->name('stripe.webhook');
-    }
 });

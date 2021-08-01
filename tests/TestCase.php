@@ -159,6 +159,8 @@ abstract class TestCase extends Orchestra
             \RenokiCo\BillingPortal\Http\Middleware\Authorize::class,
         ]);
 
+        $app['config']->set('cashier.webhook.secret', null);
+
         $app['config']->set('jetstream.stack', 'inertia');
     }
 
