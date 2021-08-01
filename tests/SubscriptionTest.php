@@ -11,7 +11,9 @@ class SubscriptionTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $subscription = $user->subscription('main');
+        $plan = Saas::getPlan(static::$stripeFreePlanId);
+
+        $subscription = $this->createStripeSubscription($user, $plan);
 
         $this->actingAs($user)
             ->get(route('billing-portal.subscription.index'))

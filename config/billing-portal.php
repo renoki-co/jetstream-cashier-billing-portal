@@ -31,4 +31,29 @@ return [
 
     'prefix' => '/billing',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Webhook Controller
+    |--------------------------------------------------------------------------
+    |
+    | The router settings for the webhook endpoints.
+    | This is being prefixed by the prefix key that was configured above.
+    |
+    */
+
+    'webhooks' => [
+
+        'middleware' => [
+            //
+        ],
+
+        'stripe' => [
+
+            'path' => '/stripe/webhook',
+
+            'class' => \RenokiCo\BillingPortal\Http\Controllers\StripeWebhook::class,
+
+        ],
+
+    ],
 ];

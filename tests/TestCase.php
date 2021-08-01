@@ -159,6 +159,8 @@ abstract class TestCase extends Orchestra
             \RenokiCo\BillingPortal\Http\Middleware\Authorize::class,
         ]);
 
+        $app['config']->set('cashier.webhook.secret', null);
+
         $app['config']->set('jetstream.stack', 'inertia');
     }
 
@@ -170,6 +172,27 @@ abstract class TestCase extends Orchestra
     protected function resetDatabase()
     {
         file_put_contents(__DIR__.'/database.sqlite', null);
+    }
+
+    /**
+     * Create a new subscription.
+     *
+     * @param  \RenokiCo\CashierRegister\Test\Models\Stripe\User  $user
+     * @param  \RenokiCo\CashierRegister\Plan  $plan
+     * @return \RenokiCo\CashierRegister\Models\Stripe\Subscription
+     */
+    protected function createStripeSubscription($user, $plan)
+    {
+        $subscription = $user->newSubscription('main', $plan->getId());
+        $meteredFeatures = $plan->getMeteredFeatures();
+
+        if (! $meteredFeatures->isEmpty()) {
+            foreach ($meteredFeatures as $feature) {
+                $subscription->meteredPrice($feature->getMeteredId());
+            }
+        }
+
+        return $subscription->create('pm_card_visa');
     }
 
     protected static function deleteStripeResource(ApiResource $resource)
