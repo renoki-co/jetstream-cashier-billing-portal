@@ -1,12 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Laravel\Cashier\Cashier as StripeCashier;
 use RenokiCo\BillingPortal\Http\Controllers\Inertia\BillingController;
 use RenokiCo\BillingPortal\Http\Controllers\Inertia\InvoiceController;
 use RenokiCo\BillingPortal\Http\Controllers\Inertia\PaymentMethodController;
 use RenokiCo\BillingPortal\Http\Controllers\Inertia\SubscriptionController;
-use RenokiCo\BillingPortal\Http\Controllers\StripeWebhook;
 
 Route::group([
     'prefix' => config('billing-portal.prefix'),
