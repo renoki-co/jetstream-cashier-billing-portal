@@ -12,7 +12,7 @@ class WebhookTest extends TestCase
 
         $subscription = $user->subscription('main');
 
-        $this->json('POST', route('billing-portal.stripe.webhook'), [
+        $this->postJson(route('billing-portal.stripe.webhook'), [
             'id' => 'foo',
             'type' => 'invoice.payment_succeeded',
             'data' => [
