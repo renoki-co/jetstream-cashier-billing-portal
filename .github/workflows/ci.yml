@@ -61,6 +61,6 @@ jobs:
       env:
         STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
 
-    - uses: codecov/codecov-action@v2.0.3
+    - uses: codecov/codecov-action@v2.1.0
       with:
         fail_ci_if_error: false
