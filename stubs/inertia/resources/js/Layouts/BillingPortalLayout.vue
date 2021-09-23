@@ -71,23 +71,28 @@
                                 Invoices
                             </div>
                         </a>
-                        <a
-                            :href="route('billing-portal.portal')"
+                        <div
                             class="flex space-x-2 text-gray-500 hover:bg-gray-200 p-3 rounded-lg"
                         >
-                            <div class="font-semibold text-gray-700">
-                                Stripe Billing Portal
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    class="w-4 h-4 ml-1 inline"
-                                >
-                                    <path
-                                        fill="currentColor"
-                                        d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"
-                                    />
-                                </svg>
-                            </div>
-                        </a>
+                            <Link
+                                :href="route('billing-portal.portal')"
+                                method="post"
+                                as="button"
+                            >
+                                <div class="font-semibold text-gray-700">
+                                    Stripe Billing Portal
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        class="w-4 h-4 ml-1 inline"
+                                    >
+                                        <path
+                                            fill="currentColor"
+                                            d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"
+                                        />
+                                    </svg>
+                                </div>
+                            </Link>
+                        </div>
                     </div>
                     <div class="flex-1">
                         <slot></slot>
@@ -100,10 +105,12 @@
 
 <script>
 import AppLayout from '@/Layouts/AppLayout';
+import { Link } from '@inertiajs/inertia-vue3'
 
 export default {
     components: {
         AppLayout,
+        Link
     },
 }
 </script>

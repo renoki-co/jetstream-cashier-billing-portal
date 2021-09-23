@@ -12,7 +12,7 @@ Route::group([
     'middleware' => config('billing-portal.middleware'),
 ], function () {
     Route::get('/', [BillingController::class, 'dashboard'])->name('dashboard');
-    Route::get('/portal', [BillingController::class, 'portal'])->name('portal');
+    Route::post('/portal', [BillingController::class, 'portal'])->name('portal');
 
     Route::post('/subscription/subscribe/{plan}', [SubscriptionController::class, 'redirectWithSubscribeIntent'])->name('subscription.plan-subscribe');
     Route::post('/subscription/swap/{plan}', [SubscriptionController::class, 'swapPlan'])->name('subscription.plan-swap');
