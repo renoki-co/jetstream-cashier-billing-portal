@@ -13,9 +13,8 @@ class InstallCommand extends JetstreamInstallCommand
      * @var string
      */
     protected $signature = 'billing-portal:install
-        {stack : The development stack that should be installed}
-        {cashier=stripe : The Cashier stack that should be installed}
-        {--composer=global : Absolute path to the Composer binary which should be used to install packages}
+        {cashier=stripe : The Cashier stack that should be installed.}
+        {--composer=global : Absolute path to the Composer binary which should be used to install packages.}
     ';
 
     /**
