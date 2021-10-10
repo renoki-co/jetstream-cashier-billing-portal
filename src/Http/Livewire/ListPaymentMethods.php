@@ -72,6 +72,7 @@ class ListPaymentMethods extends Component
             $paymentMethod = BillingPortal::getBillable($request)->findPaymentMethod($paymentMethod);
         } catch (Exception $e) {
             $this->banner('The payment method got removed!');
+
             return false;
         }
 

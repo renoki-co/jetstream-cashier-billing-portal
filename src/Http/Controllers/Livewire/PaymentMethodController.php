@@ -13,7 +13,7 @@ class PaymentMethodController extends Controller
     /**
      * Initialize the controller.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return void
      */
     public function __construct(Request $request)
@@ -28,7 +28,7 @@ class PaymentMethodController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index()
