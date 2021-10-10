@@ -34,11 +34,11 @@ class InstallCommand extends JetstreamInstallCommand
     {
         $this->installCashierRegisterStack();
 
-        if ($this->argument('stack') === 'inertia') {
+        if (config('jetstream.stack') === 'inertia') {
             $this->installInertiaStack();
         }
 
-        if ($this->argument('stack') === 'livewire') {
+        if (config('jetstream.stack') === 'livewire') {
             $this->installLivewireStack();
         }
 

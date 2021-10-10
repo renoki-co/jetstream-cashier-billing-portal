@@ -3,7 +3,6 @@
 namespace RenokiCo\BillingPortal;
 
 use Illuminate\Support\ServiceProvider;
-use Livewire\Livewire;
 use RenokiCo\BillingPortal\Http\Livewire\ListPaymentMethods;
 use RenokiCo\BillingPortal\Http\Livewire\PlansSlide;
 
@@ -31,8 +30,10 @@ class BillingPortalServiceProvider extends ServiceProvider
         }
 
         // Livewire
-        Livewire::component('plans-slide', PlansSlide::class);
-        Livewire::component('list-payment-methods', ListPaymentMethods::class);
+        if (class_exists(\Livewire\Livewire::class)) {
+            \Livewire\Livewire::component('plans-slide', PlansSlide::class);
+            \Livewire\Livewire::component('list-payment-methods', ListPaymentMethods::class);
+        }      
 
         $this->mergeConfigFrom(
             __DIR__.'/../config/billing-portal.php', 'billing-portal'

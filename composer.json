@@ -13,7 +13,6 @@
     ],
     "require": {
         "laravel/jetstream": "^2.3",
-        "livewire/livewire": "dev-master",
         "renoki-co/cashier-register": "^6.0"
     },
     "require-dev": {
