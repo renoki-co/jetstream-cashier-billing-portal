@@ -13,9 +13,8 @@ class InstallCommand extends JetstreamInstallCommand
      * @var string
      */
     protected $signature = 'billing-portal:install
-        {stack : The development stack that should be installed}
-        {cashier=stripe : The Cashier stack that should be installed}
-        {--composer=global : Absolute path to the Composer binary which should be used to install packages}
+        {cashier=stripe : The Cashier stack that should be installed.}
+        {--composer=global : Absolute path to the Composer binary which should be used to install packages.}
     ';
 
     /**
@@ -34,7 +33,13 @@ class InstallCommand extends JetstreamInstallCommand
     {
         $this->installCashierRegisterStack();
 
-        $this->installInertiaStack();
+        if (config('jetstream.stack') === 'inertia') {
+            $this->installInertiaStack();
+        }
+
+        if (config('jetstream.stack') === 'livewire') {
+            $this->installLivewireStack();
+        }
 
         $this->callSilent('vendor:publish', ['--provider' => 'RenokiCo\BillingPortal\BillingPortalServiceProvider', '--tag' => 'provider', '--force' => true]);
 
@@ -83,6 +88,29 @@ class InstallCommand extends JetstreamInstallCommand
         $this->line('');
         $this->info('Inertia scaffolding for Cashier Billing Portal installed successfully.');
         $this->comment('Please execute "npm install && npm run dev" to build your assets.');
+    }
+
+    /**
+     * Install the livewire stack into the application.
+     *
+     * @return void
+     */
+    protected function installLivewireStack()
+    {
+        $this->callSilent('vendor:publish', ['--provider' => 'RenokiCo\BillingPortal\BillingPortalServiceProvider', '--tag' => 'config', '--force' => true]);
+
+        (new Filesystem)->ensureDirectoryExists(resource_path('views/billing-portal'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('views/components'));
+
+        (new Filesystem)->copyDirectory(__DIR__.'/../../../stubs/livewire/resources/views/billing-portal', resource_path('views/billing-portal'));
+
+        copy(__DIR__.'/../../../stubs/livewire/resources/views/layouts/billing-portal.blade.php', resource_path('views/layouts/billing-portal.blade.php'));
+
+        copy(__DIR__.'/../../../stubs/livewire/resources/views/components/list-payment-methods.blade.php', resource_path('views/components/list-payment-methods.blade.php'));
+        copy(__DIR__.'/../../../stubs/livewire/resources/views/components/plans-slide.blade.php', resource_path('views/components/plans-slide.blade.php'));
+
+        $this->line('');
+        $this->info('Livewire scaffolding for Cashier Billing Portal installed successfully.');
     }
 
     /**
