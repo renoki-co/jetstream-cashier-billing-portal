@@ -34,7 +34,7 @@ class BillingPortalServiceProvider extends ServiceProvider
         if (class_exists(Livewire::class)) {
             Livewire::component('plans-slide', PlansSlide::class);
             Livewire::component('list-payment-methods', ListPaymentMethods::class);
-        }      
+        }
 
         $this->mergeConfigFrom(
             __DIR__.'/../config/billing-portal.php', 'billing-portal'

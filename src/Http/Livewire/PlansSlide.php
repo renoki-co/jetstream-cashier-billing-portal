@@ -40,7 +40,7 @@ class PlansSlide extends Component
     /**
      * Redirect the user to subscribe to the plan.
      *
-     * @param string $planId
+     * @param  string  $planId
      * @return \Illuminate\Http\Response
      */
     public function subscribeToPlan(string $planId)
@@ -62,7 +62,8 @@ class PlansSlide extends Component
         $billable = BillingPortal::getBillable($request);
 
         if (! $subscription = $this->getCurrentSubscription($billable, $request->subscription)) {
-            $this->dangerBanner( "The subscription {$request->subscription} does not exist.");
+            $this->dangerBanner("The subscription {$request->subscription} does not exist.");
+
             return false;
         }
 
@@ -89,10 +90,9 @@ class PlansSlide extends Component
                     $billable, $newPlan, $request
                 );
             });
-
         }
 
-        $this->banner( "The plan got successfully changed to {$newPlan->getName()}!");
+        $this->banner("The plan got successfully changed to {$newPlan->getName()}!");
     }
 
     /**
@@ -107,13 +107,14 @@ class PlansSlide extends Component
         $billable = BillingPortal::getBillable($request);
 
         if (! $subscription = $this->getCurrentSubscription($billable, $request->subscription)) {
-            $this->dangerBanner( "The subscription {$request->subscription} does not exist.");
+            $this->dangerBanner("The subscription {$request->subscription} does not exist.");
+
             return false;
         }
 
         $manager->cancelSubscription($subscription, $billable, $request);
 
-        $this->banner( "The current subscription got cancelled!");
+        $this->banner('The current subscription got cancelled!');
     }
 
     /**
@@ -128,13 +129,14 @@ class PlansSlide extends Component
         $billable = BillingPortal::getBillable($request);
 
         if (! $subscription = $this->getCurrentSubscription($billable, $request->subscription)) {
-            $this->dangerBanner( "The subscription {$request->subscription} does not exist.");
+            $this->dangerBanner("The subscription {$request->subscription} does not exist.");
+
             return false;
         }
 
         $manager->resumeSubscription($subscription, $billable, $request);
 
-        $this->banner( "The subscription has been resumed.");
+        $this->banner('The subscription has been resumed.');
     }
 
     /**
