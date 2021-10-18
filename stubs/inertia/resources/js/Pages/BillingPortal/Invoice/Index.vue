@@ -42,13 +42,13 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                        <a
+                                        <Link
                                             :href="invoice.url"
                                             class="text-indigo-400 hover:text-indigo-500 font-semibold"
                                             target="_blank"
                                         >
                                             Download
-                                        </a>
+                                        </Link>
                                     </td>
                                 </tr>
                             </tbody>
@@ -61,11 +61,14 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue';
+import { Link } from '@inertiajs/inertia-vue3';
 import BillingPortalLayout from '@/Layouts/BillingPortalLayout';
 
-export default {
+export default defineComponent({
     components: {
         BillingPortalLayout,
+        Link,
     },
 
     props: ['invoices'],
@@ -89,5 +92,5 @@ export default {
             );
         },
     },
-}
+});
 </script>

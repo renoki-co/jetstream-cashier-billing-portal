@@ -31,11 +31,12 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue';
 import BillingPortalLayout from '@/Layouts/BillingPortalLayout';
 import JetSecondaryButton from '@/Jetstream/SecondaryButton';
 import PlanSlide from '@/BillingPortal/PlanSlide';
 
-export default {
+export default defineComponent({
     components: {
         BillingPortalLayout,
         JetSecondaryButton,
@@ -52,5 +53,5 @@ export default {
         'onGracePeriod',
         'endingDate',
     ],
-}
+});
 </script>

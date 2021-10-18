@@ -8,7 +8,7 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0">
                     <div class="w-full md:w-1/3 lg:w-1/4 space-y-2">
-                        <a
+                        <Link
                             :href="route('billing-portal.subscription.index')"
                             class="flex space-x-2 text-gray-500 hover:bg-gray-200 p-3 rounded-lg"
                             :class="{ 'bg-gray-200': route().current('billing-portal.subscription.index') }"
@@ -28,8 +28,8 @@
                             >
                                 Subscriptions
                             </div>
-                        </a>
-                        <a
+                        </Link>
+                        <Link
                             :href="route('billing-portal.payment-method.index')"
                             class="flex space-x-2 text-gray-500 hover:bg-gray-200 p-3 rounded-lg"
                             :class="{ 'bg-gray-200': route().current('billing-portal.payment-method.index') }"
@@ -49,8 +49,8 @@
                             >
                                 Payment Methods
                             </div>
-                        </a>
-                        <a
+                        </Link>
+                        <Link
                             :href="route('billing-portal.invoice.index')"
                             class="flex space-x-2 text-gray-500 hover:bg-gray-200 p-3 rounded-lg"
                             :class="{ 'bg-gray-200': route().current('billing-portal.invoice.index') }"
@@ -70,8 +70,8 @@
                             >
                                 Invoices
                             </div>
-                        </a>
-                        <a
+                        </Link>
+                        <Link
                             :href="route('billing-portal.portal')"
                             class="flex space-x-2 text-gray-500 hover:bg-gray-200 p-3 rounded-lg"
                         >
@@ -87,7 +87,7 @@
                                     />
                                 </svg>
                             </div>
-                        </a>
+                        </Link>
                     </div>
                     <div class="flex-1">
                         <slot></slot>
@@ -99,11 +99,14 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue';
+import { Link } from '@inertiajs/inertia-vue3';
 import AppLayout from '@/Layouts/AppLayout';
 
-export default {
+export default defineComponent({
     components: {
         AppLayout,
+        Link,
     },
-}
+});
 </script>

@@ -83,12 +83,13 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue';
 import BillingPortalLayout from '@/Layouts/BillingPortalLayout';
 import JetButton from '@/Jetstream/Button';
 import JetDangerButton from '@/Jetstream/DangerButton';
 import JetSecondaryButton from '@/Jetstream/SecondaryButton';
 
-export default {
+export default defineComponent({
     components: {
         BillingPortalLayout,
         JetButton,
@@ -106,12 +107,11 @@ export default {
                 this.route('billing-portal.payment-method.default', { payment_method: method.id })
             );
         },
-
         deletePaymentMethod(method) {
             this.$inertia.delete(
                 this.route('billing-portal.payment-method.destroy', { payment_method: method.id })
             );
         },
     },
-}
+});
 </script>
