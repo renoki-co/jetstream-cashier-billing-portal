@@ -1,5 +1,5 @@
 <template>
-    <billing-portal-layout>
+    <billing-portal-layout title="Payment Methods">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Billing: Payment Methods

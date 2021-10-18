@@ -1,5 +1,5 @@
 <template>
-    <app-layout>
+    <app-layout :title="`Billing Portal: ${title}`">
         <template #header>
             <slot name="header"></slot>
         </template>
@@ -104,6 +104,10 @@ import { Link } from '@inertiajs/inertia-vue3';
 import AppLayout from '@/Layouts/AppLayout';
 
 export default defineComponent({
+    props: {
+        title: String,
+    },
+
     components: {
         AppLayout,
         Link,
