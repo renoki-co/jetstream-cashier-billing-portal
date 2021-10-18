@@ -73,6 +73,8 @@
                         </Link>
                         <Link
                             :href="route('billing-portal.portal')"
+                            method="post"
+                            as="button"
                             class="flex space-x-2 text-gray-500 hover:bg-gray-200 p-3 rounded-lg"
                         >
                             <div class="font-semibold text-gray-700">
