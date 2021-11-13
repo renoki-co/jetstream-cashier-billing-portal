@@ -103,10 +103,11 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue';
 import JetButton from '@/Jetstream/Button';
 import JetSecondaryButton from '@/Jetstream/SecondaryButton';
 
-export default {
+export default defineComponent({
     components: {
         JetButton,
         JetSecondaryButton,
@@ -134,18 +135,15 @@ export default {
         subscribeToPlan(planId) {
             this.$inertia.post(this.route('billing-portal.subscription.plan-subscribe', { plan: planId }));
         },
-
         swapPlan(planId) {
             this.$inertia.post(this.route('billing-portal.subscription.plan-swap', { plan: planId }));
         },
-
         cancelSubscription() {
             this.$inertia.post(this.route('billing-portal.subscription.cancel'));
         },
-
         resumeSubscription() {
             this.$inertia.post(this.route('billing-portal.subscription.resume'));
         },
     },
-}
+});
 </script>

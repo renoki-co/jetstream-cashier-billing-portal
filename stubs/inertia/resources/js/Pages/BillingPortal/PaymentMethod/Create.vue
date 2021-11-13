@@ -94,11 +94,12 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue';
 import AppLayout from '@/Layouts/AppLayout';
 import JetButton from '@/Jetstream/Button';
 import JetLabel from '@/Jetstream/Label';
 
-export default {
+export default defineComponent({
     components: {
         AppLayout,
         JetButton,
@@ -174,5 +175,5 @@ export default {
             }
         },
     },
-}
+});
 </script>
